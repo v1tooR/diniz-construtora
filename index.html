@@ -16,6 +16,9 @@
       --line: #a6a79f;
       --line-soft: #d4d4cd;
       --white: #fafaf7;
+      --brass: #b08d3f;
+      --brass-lift: #e3c978;
+      --brass-soft: #d8c48a;
       --display: Georgia, "Times New Roman", serif;
       --sans: "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
       --mono: "Courier New", Courier, monospace;
@@ -550,124 +553,307 @@
       font-size: 17px;
     }
 
-    .project-list {
-      display: grid;
-      gap: clamp(84px, 12vw, 176px);
+    .portfolio-nav {
+      margin-bottom: clamp(40px, 5vw, 66px);
+      border-top: 1px solid #64665f;
+      border-bottom: 1px solid #64665f;
     }
 
-    .project-card {
-      display: grid;
-      grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.55fr);
-      gap: clamp(32px, 5vw, 80px);
-      align-items: end;
+    .tab-strip {
+      display: flex;
+      overflow-x: auto;
+      scrollbar-width: none;
+      scroll-snap-type: x proximity;
+      -ms-overflow-style: none;
     }
 
-    .project-card:nth-child(even) {
-      grid-template-columns: minmax(280px, 0.55fr) minmax(0, 1.4fr);
+    .tab-strip::-webkit-scrollbar {
+      display: none;
     }
 
-    .project-card:nth-child(even) .project-visual {
-      order: 2;
-    }
-
-    .project-visual {
+    .tab {
       position: relative;
-      min-height: clamp(360px, 52vw, 720px);
-      border: 1px solid #767871;
-      overflow: hidden;
-      background-color: #262724;
-      background-image:
-        linear-gradient(30deg, transparent 49.8%, #585a54 50%, transparent 50.2%),
-        linear-gradient(150deg, transparent 49.8%, #444640 50%, transparent 50.2%);
+      flex: 1 0 auto;
+      display: grid;
+      align-content: space-between;
+      gap: 30px;
+      min-width: 172px;
+      padding: 18px 22px 20px;
+      border: 0;
+      border-right: 1px solid #3f413b;
+      color: #9b9d95;
+      background: transparent;
+      text-align: left;
+      cursor: pointer;
+      scroll-snap-align: start;
+      transition: color 220ms ease, background 220ms ease;
     }
 
-    .project-card:nth-child(2) .project-visual {
-      min-height: clamp(420px, 61vw, 820px);
+    .tab:last-child {
+      border-right: 0;
     }
 
-    .project-card:nth-child(3) .project-visual {
-      min-height: clamp(340px, 44vw, 620px);
-    }
-
-    .project-visual::before {
+    .tab::after {
       position: absolute;
-      inset: 8%;
-      border: 1px solid #777970;
+      right: 0;
+      bottom: -1px;
+      left: 0;
+      height: 2px;
+      background: var(--brass-soft);
       content: "";
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 300ms cubic-bezier(0.22, 0.7, 0.24, 1);
     }
 
-    .project-visual::after {
-      position: absolute;
-      top: 25%;
-      right: 16%;
-      bottom: 12%;
-      left: 28%;
-      border: 1px solid #a0a198;
-      background: repeating-linear-gradient(0deg, transparent 0 47px, rgba(160, 161, 152, 0.24) 48px 49px);
-      content: "";
+    .tab-index {
+      font: 9px/1 var(--mono);
+      letter-spacing: 0.14em;
+      transition: color 220ms ease;
     }
 
-    .project-number {
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      z-index: 2;
-      font: clamp(38px, 5vw, 76px)/1 var(--display);
-    }
-
-    .project-placeholder {
-      position: absolute;
-      right: 20px;
-      bottom: 20px;
-      z-index: 2;
-      max-width: calc(100% - 40px);
-      padding: 9px 12px;
-      border: 1px solid #8b8d84;
-      color: #cccdc5;
-      background: #262724;
-      font: 9px/1.3 var(--mono);
-      letter-spacing: 0.1em;
-      text-align: right;
-      text-transform: uppercase;
-    }
-
-    .project-info {
-      padding-bottom: 12px;
-    }
-
-    .project-meta {
-      display: block;
-      margin-bottom: 22px;
-      color: #aeb0a8;
-      font: 10px/1.4 var(--mono);
+    .tab-name {
+      font-size: 12px;
+      font-weight: 700;
       letter-spacing: 0.08em;
+      line-height: 1.25;
       text-transform: uppercase;
     }
 
-    .project-title {
-      margin: 0 0 24px;
+    .tab:hover {
+      color: var(--paper);
+    }
+
+    .tab[aria-selected="true"] {
+      color: var(--paper);
+      background: #232420;
+    }
+
+    .tab[aria-selected="true"]::after {
+      transform: scaleX(1);
+    }
+
+    .tab[aria-selected="true"] .tab-index {
+      color: var(--brass-soft);
+    }
+
+    .tab-panel {
+      animation: panel-in 560ms cubic-bezier(0.22, 0.7, 0.24, 1) both;
+    }
+
+    .tab-panel[hidden] {
+      display: none;
+    }
+
+    @keyframes panel-in {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+    }
+
+    .panel-head {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(230px, 0.42fr);
+      gap: clamp(26px, 5vw, 88px);
+      align-items: end;
+      margin-bottom: clamp(30px, 4vw, 50px);
+    }
+
+    .panel-head h3 {
+      margin: 0;
       font-family: var(--display);
-      font-size: clamp(34px, 4.2vw, 64px);
+      font-size: clamp(30px, 3.4vw, 52px);
       font-weight: 400;
       letter-spacing: -0.04em;
       line-height: 1;
     }
 
-    .project-info p {
-      max-width: 460px;
-      margin: 0 0 30px;
+    .panel-head p {
+      max-width: 640px;
+      margin: 16px 0 0;
       color: #c7c8c0;
     }
 
-    .project-info .button {
+    .panel-meta {
+      display: grid;
+      gap: 7px;
+      padding-top: 15px;
+      border-top: 1px solid #64665f;
+      color: #9b9d95;
+      font: 9px/1.5 var(--mono);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .panel-meta span:first-child {
+      color: var(--paper);
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      grid-auto-rows: clamp(132px, 13vw, 208px);
+      gap: 1px;
+      border: 1px solid #64665f;
+      background: #64665f;
+    }
+
+    .gallery-item {
+      position: relative;
+      display: block;
+      padding: 0;
+      border: 0;
+      color: inherit;
+      background-color: #262724;
+      overflow: hidden;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .gallery-item:nth-child(1) {
+      grid-column: span 4;
+      grid-row: span 2;
+    }
+
+    .gallery-item:nth-child(2),
+    .gallery-item:nth-child(3) {
+      grid-column: span 2;
+    }
+
+    .gallery-item:nth-child(4),
+    .gallery-item:nth-child(5),
+    .gallery-item:nth-child(6) {
+      grid-column: span 2;
+      grid-row: span 2;
+    }
+
+    .gallery-item::after {
+      position: absolute;
+      inset: auto 0 0;
+      height: 52%;
+      background: linear-gradient(to top, rgba(22, 23, 21, 0.94), rgba(22, 23, 21, 0));
+      content: "";
+      pointer-events: none;
+    }
+
+    .gallery-art {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(30deg, transparent 49.7%, #55574f 50%, transparent 50.3%),
+        linear-gradient(150deg, transparent 49.7%, #3f413b 50%, transparent 50.3%);
+      transition: transform 760ms cubic-bezier(0.2, 0.7, 0.2, 1);
+    }
+
+    .gallery-art::before {
+      position: absolute;
+      inset: 13% 15%;
+      border: 1px solid #7d7f77;
+      content: "";
+    }
+
+    .gallery-art::after {
+      position: absolute;
+      inset: 34% 20% 18% 24%;
+      border: 1px solid #9b9d94;
+      background: repeating-linear-gradient(0deg, transparent 0 22px, rgba(155, 157, 148, 0.2) 23px 24px);
+      content: "";
+    }
+
+    .gallery-item:nth-child(2) .gallery-art::after,
+    .gallery-item:nth-child(5) .gallery-art::after {
+      inset: 24% 22% 16% 22%;
+      border-radius: 50% 50% 0 0;
+      background: repeating-linear-gradient(90deg, transparent 0 24px, rgba(155, 157, 148, 0.18) 25px 26px);
+    }
+
+    .gallery-item:nth-child(3) .gallery-art::before {
+      inset: 22% 9%;
+    }
+
+    .gallery-item:nth-child(4) .gallery-art::after {
+      inset: 28% 32% 14% 14%;
+      background: repeating-linear-gradient(45deg, transparent 0 15px, rgba(155, 157, 148, 0.16) 16px 17px);
+    }
+
+    .gallery-item:nth-child(6) .gallery-art::before {
+      inset: 8%;
+    }
+
+    .gallery-item:nth-child(6) .gallery-art::after {
+      inset: 22% 18%;
+      background: repeating-linear-gradient(135deg, transparent 0 19px, rgba(155, 157, 148, 0.18) 20px 21px);
+    }
+
+    .gallery-item:hover .gallery-art,
+    .gallery-item:focus-visible .gallery-art {
+      transform: scale(1.05);
+    }
+
+    .gallery-index {
+      position: absolute;
+      top: 14px;
+      left: 16px;
+      z-index: 2;
+      color: #d3d4cc;
+      font: 9px/1 var(--mono);
+      letter-spacing: 0.14em;
+    }
+
+    .gallery-caption {
+      position: absolute;
+      right: 14px;
+      bottom: 13px;
+      left: 16px;
+      z-index: 2;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 14px;
+      color: #cfd0c8;
+      font: 9px/1.4 var(--mono);
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+    }
+
+    .gallery-caption em {
+      flex: none;
+      color: var(--brass-soft);
+      font-style: normal;
+      opacity: 0;
+      transform: translateY(7px);
+      transition: opacity 260ms ease, transform 260ms ease;
+    }
+
+    .gallery-item:hover .gallery-caption em,
+    .gallery-item:focus-visible .gallery-caption em {
+      opacity: 1;
+      transform: none;
+    }
+
+    .panel-foot {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      margin-top: 26px;
+    }
+
+    .panel-foot .button {
       border-color: #d7d8d0;
       color: var(--paper);
       background: transparent;
     }
 
-    .project-info .button:hover {
+    .panel-foot .button:hover {
       color: var(--ink);
       background: var(--paper);
+    }
+
+    .panel-foot .content-pending {
+      margin-top: 0;
     }
 
     .about {
@@ -746,28 +932,35 @@
 
     .services-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       border-top: 1px solid var(--line);
     }
 
     .service-card {
+      display: flex;
+      flex-direction: column;
       min-height: 340px;
       padding: clamp(28px, 3.5vw, 52px);
       border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
     }
 
-    .service-card:last-child {
+    .service-card:nth-child(3n) {
       border-right: 0;
+    }
+
+    .service-card:nth-last-child(-n + 3) {
+      border-bottom: 0;
     }
 
     .service-number {
       display: block;
-      margin-bottom: 70px;
+      margin-bottom: 62px;
       font: 10px/1 var(--mono);
     }
 
     .service-card h3 {
-      margin: 0 0 22px;
+      margin: 0 0 20px;
       font-family: var(--display);
       font-size: clamp(25px, 2.3vw, 37px);
       font-weight: 400;
@@ -779,6 +972,188 @@
       margin: 0;
       color: var(--ink-soft);
       font-size: 15px;
+    }
+
+    .service-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 24px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .service-tags li {
+      padding: 5px 9px;
+      border: 1px solid var(--line-soft);
+      color: var(--ink-soft);
+      font: 9px/1.2 var(--mono);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .service-link {
+      display: inline-flex;
+      align-items: center;
+      align-self: flex-start;
+      gap: 9px;
+      margin-top: auto;
+      padding: 30px 0 0;
+      border: 0;
+      color: inherit;
+      background: none;
+      font: 700 10px/1.2 var(--mono);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .service-link span {
+      border-bottom: 1px solid var(--line);
+      transition: border-color 200ms ease;
+    }
+
+    .service-link:hover span {
+      border-color: var(--ink);
+    }
+
+    .service-link + .service-link {
+      margin-top: 0;
+      padding-top: 12px;
+    }
+
+    .admin-scope {
+      padding: var(--section-space) 0;
+      border-top: 1px solid var(--line);
+      background: var(--paper-strong);
+    }
+
+    .admin-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr);
+      gap: clamp(44px, 7vw, 120px);
+      align-items: start;
+    }
+
+    .admin-aside {
+      position: sticky;
+      top: 122px;
+    }
+
+    .admin-aside .section-title {
+      margin-bottom: 30px;
+    }
+
+    .admin-aside p {
+      max-width: 430px;
+      margin: 0 0 34px;
+      color: var(--ink-soft);
+    }
+
+    .value-badge {
+      display: grid;
+      gap: 7px;
+      max-width: 370px;
+      margin-bottom: 30px;
+      padding: 18px 22px;
+      border: 1px solid var(--ink);
+      background:
+        linear-gradient(100deg, var(--brass) 0%, var(--brass-lift) 54%, var(--brass) 100%);
+    }
+
+    .value-badge span {
+      font: 700 9px/1 var(--mono);
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .value-badge strong {
+      font-family: var(--display);
+      font-size: clamp(25px, 2.4vw, 35px);
+      font-weight: 400;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+    }
+
+    .admin-phases {
+      display: grid;
+      border-top: 1px solid var(--ink);
+    }
+
+    .phase {
+      display: grid;
+      grid-template-columns: 92px minmax(0, 1fr);
+      gap: clamp(16px, 3vw, 44px);
+      padding: clamp(28px, 3.5vw, 46px) 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .phase-index {
+      font: 11px/1.4 var(--mono);
+      letter-spacing: 0.12em;
+    }
+
+    .phase h3 {
+      margin: 0 0 24px;
+      font-family: var(--display);
+      font-size: clamp(24px, 2.3vw, 35px);
+      font-weight: 400;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+    }
+
+    .check-list {
+      display: grid;
+      gap: 13px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .check-list li {
+      display: grid;
+      grid-template-columns: 18px minmax(0, 1fr);
+      gap: 14px;
+      align-items: start;
+      max-width: 620px;
+      font-size: 15px;
+      line-height: 1.45;
+    }
+
+    .check-list li::before {
+      display: grid;
+      place-items: center;
+      width: 18px;
+      height: 18px;
+      margin-top: 2px;
+      border: 1px solid var(--ink);
+      color: transparent;
+      background: transparent;
+      content: "✓";
+      font-size: 11px;
+      line-height: 1;
+      transition: color 340ms ease, background 340ms ease;
+    }
+
+    .phase.is-visible .check-list li::before {
+      color: var(--ink);
+      background: var(--brass-lift);
+    }
+
+    .check-list li:nth-child(2)::before { transition-delay: 70ms; }
+    .check-list li:nth-child(3)::before { transition-delay: 140ms; }
+    .check-list li:nth-child(4)::before { transition-delay: 210ms; }
+    .check-list li:nth-child(5)::before { transition-delay: 280ms; }
+    .check-list li:nth-child(6)::before { transition-delay: 350ms; }
+
+    .check-list small {
+      display: block;
+      grid-column: 2;
+      margin-top: 5px;
+      color: var(--ink-soft);
+      font-size: 13px;
+      line-height: 1.4;
     }
 
     .method {
@@ -980,6 +1355,42 @@
       content: "↗";
     }
 
+    .contact-lines {
+      margin: 0 0 32px;
+      border-top: 1px solid var(--ink);
+    }
+
+    .contact-line {
+      display: grid;
+      grid-template-columns: 78px minmax(0, 1fr);
+      gap: 16px;
+      align-items: baseline;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .contact-line dt {
+      color: var(--ink-soft);
+      font: 700 9px/1.6 var(--mono);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .contact-line dd {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.45;
+    }
+
+    .contact-line a {
+      border-bottom: 1px solid var(--line);
+      transition: border-color 200ms ease;
+    }
+
+    .contact-line a:hover {
+      border-color: var(--ink);
+    }
+
     .form-layout {
       display: grid;
       grid-template-columns: 0.55fr 1.45fr;
@@ -1091,6 +1502,13 @@
       color: var(--ink-soft);
     }
 
+    .footer-brand p + p {
+      margin-top: 14px;
+      font: 10px/1.6 var(--mono);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
     .footer-column h3 {
       margin: 0 0 24px;
       font: 700 10px/1.3 var(--mono);
@@ -1134,6 +1552,7 @@
       width: min(720px, calc(100vw - 40px));
       max-height: calc(100svh - 40px);
       padding: 0;
+      overflow: auto;
       border: 1px solid var(--ink);
       color: var(--ink);
       background: var(--paper);
@@ -1166,6 +1585,51 @@
       background: transparent;
       font-size: 22px;
       cursor: pointer;
+    }
+
+    .dialog-figure {
+      position: relative;
+      aspect-ratio: 16 / 9;
+      border-bottom: 1px solid var(--line);
+      overflow: hidden;
+      background-color: var(--paper-strong);
+    }
+
+    .dialog-art {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(30deg, transparent 49.7%, var(--line) 50%, transparent 50.3%),
+        linear-gradient(150deg, transparent 49.7%, var(--line-soft) 50%, transparent 50.3%);
+    }
+
+    .dialog-art::before {
+      position: absolute;
+      inset: 13% 15%;
+      border: 1px solid var(--ink);
+      content: "";
+    }
+
+    .dialog-art::after {
+      position: absolute;
+      inset: 34% 20% 16% 24%;
+      border: 1px solid var(--line);
+      background: repeating-linear-gradient(0deg, transparent 0 20px, rgba(25, 26, 24, 0.08) 21px 22px);
+      content: "";
+    }
+
+    .dialog-figure-note {
+      position: absolute;
+      right: 14px;
+      bottom: 14px;
+      z-index: 2;
+      padding: 7px 9px;
+      border: 1px solid var(--line);
+      color: var(--ink-soft);
+      background: var(--paper);
+      font: 9px/1.2 var(--mono);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
     }
 
     .dialog-content {
@@ -1290,12 +1754,51 @@
         grid-template-columns: repeat(2, 1fr);
       }
 
-      .service-card:nth-child(2) {
+      .service-card:nth-child(3n) {
+        border-right: 1px solid var(--line);
+      }
+
+      .service-card:nth-child(2n) {
         border-right: 0;
       }
 
-      .service-card:nth-child(-n + 2) {
+      .service-card {
         border-bottom: 1px solid var(--line);
+      }
+
+      .service-card:nth-last-child(-n + 2) {
+        border-bottom: 0;
+      }
+
+      .gallery {
+        grid-template-columns: repeat(4, 1fr);
+        grid-auto-rows: clamp(140px, 18vw, 200px);
+      }
+
+      .gallery-item:nth-child(2),
+      .gallery-item:nth-child(3) {
+        grid-column: span 2;
+        grid-row: span 1;
+      }
+
+      .gallery-item:nth-child(6) {
+        grid-column: span 4;
+        grid-row: span 2;
+      }
+
+      .panel-head {
+        grid-template-columns: 1fr;
+        gap: 26px;
+        align-items: start;
+      }
+
+      .admin-layout {
+        grid-template-columns: 1fr;
+        gap: 52px;
+      }
+
+      .admin-aside {
+        position: static;
       }
 
       .trust-grid {
@@ -1414,28 +1917,50 @@
         margin-bottom: 64px;
       }
 
-      .project-list {
-        gap: 88px;
+      .tab {
+        min-width: 148px;
+        gap: 20px;
+        padding: 15px 16px 17px;
       }
 
-      .project-card,
-      .project-card:nth-child(even) {
+      .tab-name {
+        font-size: 11px;
+      }
+
+      .panel-head h3 {
+        font-size: clamp(30px, 9vw, 44px);
+      }
+
+      .gallery {
         grid-template-columns: 1fr;
-        gap: 28px;
+        grid-auto-rows: 232px;
       }
 
-      .project-card:nth-child(even) .project-visual {
-        order: initial;
+      .gallery-item:nth-child(n) {
+        grid-column: auto;
+        grid-row: span 1;
       }
 
-      .project-visual,
-      .project-card:nth-child(2) .project-visual,
-      .project-card:nth-child(3) .project-visual {
-        min-height: 430px;
+      .gallery-item:nth-child(1) {
+        grid-row: span 2;
       }
 
-      .project-info .button {
+      .panel-foot {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .panel-foot .button {
         width: 100%;
+      }
+
+      .phase {
+        grid-template-columns: 1fr;
+        gap: 18px;
+      }
+
+      .value-badge {
+        max-width: none;
       }
 
       .portrait-placeholder {
@@ -1455,7 +1980,8 @@
       }
 
       .service-card,
-      .service-card:nth-child(2) {
+      .service-card:nth-child(2n),
+      .service-card:nth-child(3n) {
         min-height: 0;
         border-right: 0;
         border-bottom: 1px solid var(--line);
@@ -1604,6 +2130,7 @@
 
       <nav class="main-nav" id="main-nav" aria-label="Navegação principal">
         <a href="#projetos">Projetos</a>
+        <a href="#servicos">Serviços</a>
         <a href="#sobre">Sobre</a>
         <a href="#metodo">Método</a>
         <a href="#contato">Contato</a>
@@ -1637,7 +2164,7 @@
 
           <div class="hero-visual reveal" role="img" aria-label="Espaço reservado para imagem arquitetônica principal">
             <span class="visual-label">Imagem hero / 4:5</span>
-            <span class="visual-coordinate">23°33'S — 46°38'W</span>
+            <span class="visual-coordinate">22°46'S — 47°17'W / Nova Odessa</span>
             <span class="visual-room" aria-hidden="true"></span>
             <span class="wire-caption">Futura animação arquitetônica</span>
           </div>
@@ -1652,7 +2179,7 @@
 
     <section class="editorial-intro" id="abertura" aria-labelledby="intro-title">
       <div class="page-shell editorial-grid">
-        <span class="section-index">02 / 10</span>
+        <span class="section-index">02 / 11</span>
 
         <div class="reveal">
           <p class="section-kicker">Construir é materializar uma visão</p>
@@ -1671,64 +2198,345 @@
       <div class="page-shell">
         <div class="section-head reveal">
           <div>
-            <p class="section-kicker">03 / Projetos selecionados</p>
+            <p class="section-kicker">03 / Projetos por disciplina</p>
             <h2 class="section-title" id="portfolio-title">Obras que traduzem intenção, técnica e cuidado.</h2>
           </div>
-          <p class="section-head-copy">Cada projeto apresenta desafios, escolhas e soluções diferentes. Nosso portfólio reúne trabalhos que representam a maneira como pensamos e executamos cada construção.</p>
+          <p class="section-head-copy">Cada frente de trabalho tem sua própria linguagem técnica. Navegue pelas disciplinas para ver como pensamos, desenhamos e executamos cada etapa da construção.</p>
         </div>
 
-        <div class="project-list">
-          <article class="project-card reveal">
-            <div class="project-visual" role="img" aria-label="Espaço reservado para fotografia do projeto 01">
-              <span class="project-number">01</span>
-              <span class="project-placeholder">Imagem do projeto / Formato horizontal</span>
-            </div>
-            <div class="project-info">
-              <span class="project-meta">[Tipo de projeto] · [Cidade/UF] · [Ano]</span>
-              <h3 class="project-title">[Nome do projeto]</h3>
-              <p>Um projeto desenvolvido para equilibrar funcionalidade, estética e aproveitamento inteligente dos espaços.</p>
-              <button class="button project-open" type="button" data-project="Projeto 01 — [Nome do projeto]">Ver projeto</button>
-            </div>
-          </article>
+        <div class="portfolio-nav reveal">
+          <div class="tab-strip" role="tablist" aria-label="Disciplinas do portfólio">
+            <button class="tab" type="button" role="tab" id="tab-arquitetonico" aria-controls="painel-arquitetonico" aria-selected="true" tabindex="0">
+              <span class="tab-index">01</span>
+              <span class="tab-name">Arquitetônico</span>
+            </button>
+            <button class="tab" type="button" role="tab" id="tab-interiores" aria-controls="painel-interiores" aria-selected="false" tabindex="-1">
+              <span class="tab-index">02</span>
+              <span class="tab-name">Design de<br>Interiores</span>
+            </button>
+            <button class="tab" type="button" role="tab" id="tab-estrutural" aria-controls="painel-estrutural" aria-selected="false" tabindex="-1">
+              <span class="tab-index">03</span>
+              <span class="tab-name">Estrutural</span>
+            </button>
+            <button class="tab" type="button" role="tab" id="tab-hidraulico" aria-controls="painel-hidraulico" aria-selected="false" tabindex="-1">
+              <span class="tab-index">04</span>
+              <span class="tab-name">Hidráulico</span>
+            </button>
+            <button class="tab" type="button" role="tab" id="tab-eletrico" aria-controls="painel-eletrico" aria-selected="false" tabindex="-1">
+              <span class="tab-index">05</span>
+              <span class="tab-name">Elétrico</span>
+            </button>
+            <button class="tab" type="button" role="tab" id="tab-administracao" aria-controls="painel-administracao" aria-selected="false" tabindex="-1">
+              <span class="tab-index">06</span>
+              <span class="tab-name">Administração<br>de obra</span>
+            </button>
+          </div>
+        </div>
 
-          <article class="project-card reveal">
-            <div class="project-visual" role="img" aria-label="Espaço reservado para fotografia do projeto 02">
-              <span class="project-number">02</span>
-              <span class="project-placeholder">Imagem do projeto / Formato vertical</span>
+        <div class="tab-panel" role="tabpanel" id="painel-arquitetonico" aria-labelledby="tab-arquitetonico" tabindex="0">
+          <div class="panel-head">
+            <div>
+              <h3>Projeto arquitetônico</h3>
+              <p>Do estudo preliminar ao projeto executivo. Definimos implantação, volumetria, fluxos e a documentação necessária para aprovação e obra.</p>
             </div>
-            <div class="project-info">
-              <span class="project-meta">[Tipo de projeto] · [Cidade/UF] · [Ano]</span>
-              <h3 class="project-title">[Nome do projeto]</h3>
-              <p>Planejamento e execução alinhados para transformar as necessidades do cliente em uma construção segura, prática e bem resolvida.</p>
-              <button class="button project-open" type="button" data-project="Projeto 02 — [Nome do projeto]">Ver projeto</button>
+            <div class="panel-meta">
+              <span>06 registros na galeria</span>
+              <span>Estudo · Anteprojeto · Executivo · Aprovação</span>
             </div>
-          </article>
+          </div>
 
-          <article class="project-card reveal">
-            <div class="project-visual" role="img" aria-label="Espaço reservado para fotografia do projeto 03">
-              <span class="project-number">03</span>
-              <span class="project-placeholder">Imagem do projeto / Detalhe construtivo</span>
-            </div>
-            <div class="project-info">
-              <span class="project-meta">[Tipo de projeto] · [Cidade/UF] · [Ano]</span>
-              <h3 class="project-title">[Nome do projeto]</h3>
-              <p>Uma obra marcada pelo cuidado nos acabamentos, pela organização das etapas e pela atenção aos detalhes construtivos.</p>
-              <button class="button project-open" type="button" data-project="Projeto 03 — [Nome do projeto]">Ver projeto</button>
-            </div>
-          </article>
+          <div class="gallery">
+            <button class="gallery-item" type="button" data-discipline="Arquitetônico" data-title="Implantação e volumetria" data-meta="Estudo preliminar · Prancha 01">
+              <span class="gallery-art" aria-hidden="true"></span>
+              <span class="gallery-index">01</span>
+              <span class="gallery-caption">Implantação e volumetria <em>Ampliar ↗</em></span>
+            </button>
+            <button class="gallery-item" type="button" data-discipline="Arquitetônico" data-title="Planta baixa humanizada" data-meta="Anteprojeto · Prancha 02">
+              <span class="gallery-art" aria-hidden="true"></span>
+              <span class="gallery-index">02</span>
+              <span class="gallery-caption">Planta baixa humanizada <em>Ampliar ↗</em></span>
+            </button>
+            <button class="gallery-item" type="button" data-discipline="Arquitetônico" data-title="Cortes e elevações" data-meta="Executivo · Prancha 03">
+              <span class="gallery-art" aria-hidden="true"></span>
+              <span class="gallery-index">03</span>
+              <span class="gallery-caption">Cortes e elevações <em>Ampliar ↗</em></span>
+            </button>
+            <button class="gallery-item" type="button" data-discipline="Arquitetônico" data-title="Estudo de fachada" data-meta="Anteprojeto · Prancha 04">
+              <span class="gallery-art" aria-hidden="true"></span>
+              <span class="gallery-index">04</span>
+              <span class="gallery-caption">Estudo de fachada <em>Ampliar ↗</em></span>
+            </button>
+            <button class="gallery-item" type="button" data-discipline="Arquitetônico" data-title="Detalhamento executivo" data-meta="Executivo · Prancha 05">
+              <span class="gallery-art" aria-hidden="true"></span>
+              <span class="gallery-index">05</span>
+              <span class="gallery-caption">Detalhamento executivo <em>Ampliar ↗</em></span>
+            </button>
+            <button class="gallery-item" type="button" data-discipline="Arquitetônico" data-title="Maquete eletrônica" data-meta="Apresentação · Render 01">
+              <span class="gallery-art" aria-hidden="true"></span>
+              <span class="gallery-index">06</span>
+              <span class="gallery-caption">Maquete eletrônica <em>Ampliar ↗</em></span>
+            </button>
+          </div>
 
-          <article class="project-card reveal">
-            <div class="project-visual" role="img" aria-label="Espaço reservado para fotografia do projeto 04">
-              <span class="project-number">04</span>
-              <span class="project-placeholder">Imagem do projeto / Vista de conjunto</span>
+          <div class="panel-foot">
+            <span class="content-pending">Imagens reais a inserir</span>
+            <a class="button" href="#contato">Solicitar projeto arquitetônico</a>
+          </div>
+        </div>
+
+        <div class="tab-panel" role="tabpanel" id="painel-interiores" aria-labelledby="tab-interiores" tabindex="0" hidden>
+          <div class="panel-head">
+            <div>
+              <h3>Design de interiores</h3>
+              <p>Layout, marcenaria sob medida, iluminação e acabamentos especificados para que o ambiente funcione tão bem quanto se apresenta.</p>
             </div>
-            <div class="project-info">
-              <span class="project-meta">[Tipo de projeto] · [Cidade/UF] · [Ano]</span>
-              <h3 class="project-title">[Nome do projeto]</h3>
-              <p>Soluções pensadas para valorizar o espaço, otimizar sua utilização e garantir qualidade em cada etapa da execução.</p>
-              <button class="button project-open" type="button" data-project="Projeto 04 — [Nome do projeto]">Ver projeto</button>
+            <div class="panel-meta">
+              <span>06 registros na galeria</span>
+              <span>Layout · Marcenaria · Iluminação · Acabamentos</span>
             </div>
-          </article>
+          </div>
+
+          <div class="gallery">
+            <button class="gallery-item" type="button" data-discipline="Design de interiores" data-title="Ambiente integrado" data-meta="Projeto de interiores · Vista 01">
+              <span class="gallery-art" aria-hidden="true"></span>
+              <span class="gallery-index">01</span>
+              <span class="gallery-caption">Ambiente integrado <em>Ampliar ↗</em></span>
+            </button>
+            <button class="gallery-item" type="button" data-discipline="Design de interiores" data-title="Marcenaria sob medida" data-meta="Detalhamento · Prancha 02">
+              <span class="gallery-art" aria-hidden="true"></span>
+              <span class="gallery-index">02</span>
+              <span class="gallery-caption">Marcenaria sob medida <em>Ampliar ↗</em></span>
+            </button>
+            <button class="gallery-item" type="button" data-discipline="Design de interiores" data-title="Paginação de piso" data-meta="Executivo · Prancha 03">
+              <span class="gallery-art" aria-hidden="true"></span>
+              <span class="gallery-index">03</span>
+              <span class="gallery-caption">Paginação de piso <em>Ampliar ↗</em></span>
+            </button>
+            <button class="gallery-item" type="button" data-discipline="Design de interiores" data-title="Forro e iluminação" data-meta="Executivo · Prancha 04">
+              <span class="gallery-art" aria-hidden="true"></span>
+              <span class="gallery-index">04</span>
+              <span class="gallery-caption">Forro e iluminação <em>Ampliar ↗</em></span>
+            </button>
+            <button class="gallery-item" type="button" data-discipline="Design de interiores" data-title="Cartela de acabamentos" data-meta="Especificação · Prancha 05">
+              <span class="gallery-art" aria-hidden="true"></span>
+              <span class="gallery-index">05</span>
+              <span class="gallery-caption">Cartela de acabamentos <em>Ampliar ↗</em></span>
+            </button>
+            <button class="gallery-item" type="button" data-discipline="Design de interiores" data-title="Detalhe de mobiliário" data-meta="Detalhamento · Prancha 06">
+              <span class="gallery-art" aria-hidden="true"></span>
+              <span class="gallery-index">06</span>
+              <span class="gallery-caption">Detalhe de mobiliário <em>Ampliar ↗</em></span>
+            </button>
+          </div>
+
+          <div class="panel-foot">
+            <span class="content-pending">Imagens reais a inserir</span>
+            <a class="button" href="#contato">Solicitar projeto de interiores</a>
+          </div>
+        </div>
+
+        <div class="tab-panel" role="tabpanel" id="painel-estrutural" aria-labelledby="tab-estrutural" tabindex="0" hidden>
+          <div class="panel-head">
+            <div>
+              <h3>Projeto estrutural</h3>
+              <p>Fundação, pilares, vigas e lajes dimensionados com memorial de cálculo, planta de fôrmas e detalhamento de armação para execução segura.</p>
+            </div>
+            <div class="panel-meta">
+              <span>06 registros na galeria</span>
+              <span>Fundação · Fôrmas · Armação · Memorial</span>
+            </div>
+          </div>
+
+          <div class="gallery">
+            <button class="gallery-item" type="button" data-discipline="Estrutural" data-title="Fôrmas e armação" data-meta="Execução · Registro 01">
+              <span class="gallery-art" aria-hidden="true"></span>
+              <span class="gallery-index">01</span>
+              <span class="gallery-caption">Fôrmas e armação <em>Ampliar ↗</em></span>
+            </button>
+            <button class="gallery-item" type="button" data-discipline="Estrutural" data-title="Fundação executada" data-meta="Execução · Registro 02">
+              <span class="gallery-art" aria-hidden="true"></span>
+              <span class="gallery-index">02</span>
+              <span class="gallery-caption">Fundação executada <em>Ampliar ↗</em></span>
+            </button>
+            <button class="gallery-item" type="button" data-discipline="Estrutural" data-title="Laje concretada" data-meta="Execução · Registro 03">
+              <span class="gallery-art" aria-hidden="true"></span>
+              <span class="gallery-index">03</span>
+              <span class="gallery-caption">Laje concretada <em>Ampliar ↗</em></span>
+            </button>
+            <button class="gallery-item" type="button" data-discipline="Estrutural" data-title="Planta de fôrmas" data-meta="Executivo · Prancha 04">
+              <span class="gallery-art" aria-hidden="true"></span>
+              <span class="gallery-index">04</span>
+              <span class="gallery-caption">Planta de fôrmas <em>Ampliar ↗</em></span>
+            </button>
+            <button class="gallery-item" type="button" data-discipline="Estrutural" data-title="Detalhe de pilar" data-meta="Detalhamento · Prancha 05">
+              <span class="gallery-art" aria-hidden="true"></span>
+              <span class="gallery-index">05</span>
+              <span class="gallery-caption">Detalhe de pilar <em>Ampliar ↗</em></span>
+            </button>
+            <button class="gallery-item" type="button" data-discipline="Estrutural" data-title="Memorial de cálculo" data-meta="Documentação · Caderno 01">
+              <span class="gallery-art" aria-hidden="true"></span>
+              <span class="gallery-index">06</span>
+              <span class="gallery-caption">Memorial de cálculo <em>Ampliar ↗</em></span>
+            </button>
+          </div>
+
+          <div class="panel-foot">
+            <span class="content-pending">Imagens reais a inserir</span>
+            <a class="button" href="#contato">Solicitar projeto estrutural</a>
+          </div>
+        </div>
+
+        <div class="tab-panel" role="tabpanel" id="painel-hidraulico" aria-labelledby="tab-hidraulico" tabindex="0" hidden>
+          <div class="panel-head">
+            <div>
+              <h3>Projeto hidráulico</h3>
+              <p>Água fria e quente, esgoto, ventilação e águas pluviais dimensionados com traçado, isométricos e pontos definidos antes da alvenaria.</p>
+            </div>
+            <div class="panel-meta">
+              <span>06 registros na galeria</span>
+              <span>Água · Esgoto · Pluvial · Reservação</span>
+            </div>
+          </div>
+
+          <div class="gallery">
+            <button class="gallery-item" type="button" data-discipline="Hidráulico" data-title="Prumadas e barrilete" data-meta="Executivo · Prancha 01">
+              <span class="gallery-art" aria-hidden="true"></span>
+              <span class="gallery-index">01</span>
+              <span class="gallery-caption">Prumadas e barrilete <em>Ampliar ↗</em></span>
+            </button>
+            <button class="gallery-item" type="button" data-discipline="Hidráulico" data-title="Rede de água fria" data-meta="Executivo · Prancha 02">
+              <span class="gallery-art" aria-hidden="true"></span>
+              <span class="gallery-index">02</span>
+              <span class="gallery-caption">Rede de água fria <em>Ampliar ↗</em></span>
+            </button>
+            <button class="gallery-item" type="button" data-discipline="Hidráulico" data-title="Esgoto e ventilação" data-meta="Executivo · Prancha 03">
+              <span class="gallery-art" aria-hidden="true"></span>
+              <span class="gallery-index">03</span>
+              <span class="gallery-caption">Esgoto e ventilação <em>Ampliar ↗</em></span>
+            </button>
+            <button class="gallery-item" type="button" data-discipline="Hidráulico" data-title="Isométrico hidráulico" data-meta="Detalhamento · Prancha 04">
+              <span class="gallery-art" aria-hidden="true"></span>
+              <span class="gallery-index">04</span>
+              <span class="gallery-caption">Isométrico hidráulico <em>Ampliar ↗</em></span>
+            </button>
+            <button class="gallery-item" type="button" data-discipline="Hidráulico" data-title="Reservatório e recalque" data-meta="Executivo · Prancha 05">
+              <span class="gallery-art" aria-hidden="true"></span>
+              <span class="gallery-index">05</span>
+              <span class="gallery-caption">Reservatório e recalque <em>Ampliar ↗</em></span>
+            </button>
+            <button class="gallery-item" type="button" data-discipline="Hidráulico" data-title="Execução dos pontos" data-meta="Execução · Registro 01">
+              <span class="gallery-art" aria-hidden="true"></span>
+              <span class="gallery-index">06</span>
+              <span class="gallery-caption">Execução dos pontos <em>Ampliar ↗</em></span>
+            </button>
+          </div>
+
+          <div class="panel-foot">
+            <span class="content-pending">Imagens reais a inserir</span>
+            <a class="button" href="#contato">Solicitar projeto hidráulico</a>
+          </div>
+        </div>
+
+        <div class="tab-panel" role="tabpanel" id="painel-eletrico" aria-labelledby="tab-eletrico" tabindex="0" hidden>
+          <div class="panel-head">
+            <div>
+              <h3>Projeto elétrico</h3>
+              <p>Entrada de energia, quadros, circuitos, infraestrutura de eletrodutos e luminotécnico dimensionados com previsão de carga e proteção.</p>
+            </div>
+            <div class="panel-meta">
+              <span>06 registros na galeria</span>
+              <span>Quadros · Circuitos · Luminotécnico · SPDA</span>
+            </div>
+          </div>
+
+          <div class="gallery">
+            <button class="gallery-item" type="button" data-discipline="Elétrico" data-title="Quadro de distribuição" data-meta="Execução · Registro 01">
+              <span class="gallery-art" aria-hidden="true"></span>
+              <span class="gallery-index">01</span>
+              <span class="gallery-caption">Quadro de distribuição <em>Ampliar ↗</em></span>
+            </button>
+            <button class="gallery-item" type="button" data-discipline="Elétrico" data-title="Diagrama unifilar" data-meta="Executivo · Prancha 02">
+              <span class="gallery-art" aria-hidden="true"></span>
+              <span class="gallery-index">02</span>
+              <span class="gallery-caption">Diagrama unifilar <em>Ampliar ↗</em></span>
+            </button>
+            <button class="gallery-item" type="button" data-discipline="Elétrico" data-title="Infraestrutura de eletrodutos" data-meta="Execução · Registro 03">
+              <span class="gallery-art" aria-hidden="true"></span>
+              <span class="gallery-index">03</span>
+              <span class="gallery-caption">Infraestrutura de eletrodutos <em>Ampliar ↗</em></span>
+            </button>
+            <button class="gallery-item" type="button" data-discipline="Elétrico" data-title="Pontos e circuitos" data-meta="Executivo · Prancha 04">
+              <span class="gallery-art" aria-hidden="true"></span>
+              <span class="gallery-index">04</span>
+              <span class="gallery-caption">Pontos e circuitos <em>Ampliar ↗</em></span>
+            </button>
+            <button class="gallery-item" type="button" data-discipline="Elétrico" data-title="Projeto luminotécnico" data-meta="Executivo · Prancha 05">
+              <span class="gallery-art" aria-hidden="true"></span>
+              <span class="gallery-index">05</span>
+              <span class="gallery-caption">Projeto luminotécnico <em>Ampliar ↗</em></span>
+            </button>
+            <button class="gallery-item" type="button" data-discipline="Elétrico" data-title="Entrada de energia" data-meta="Execução · Registro 06">
+              <span class="gallery-art" aria-hidden="true"></span>
+              <span class="gallery-index">06</span>
+              <span class="gallery-caption">Entrada de energia <em>Ampliar ↗</em></span>
+            </button>
+          </div>
+
+          <div class="panel-foot">
+            <span class="content-pending">Imagens reais a inserir</span>
+            <a class="button" href="#contato">Solicitar projeto elétrico</a>
+          </div>
+        </div>
+
+        <div class="tab-panel" role="tabpanel" id="painel-administracao" aria-labelledby="tab-administracao" tabindex="0" hidden>
+          <div class="panel-head">
+            <div>
+              <h3>Administração de obra</h3>
+              <p>A frente que conduz todas as outras: cronograma, compras, contratação, fiscalização e prestação de contas registrada etapa por etapa.</p>
+            </div>
+            <div class="panel-meta">
+              <span>06 registros na galeria</span>
+              <span>Cronograma · Custos · Fiscalização · Entrega</span>
+            </div>
+          </div>
+
+          <div class="gallery">
+            <button class="gallery-item" type="button" data-discipline="Administração de obra" data-title="Cronograma físico-financeiro" data-meta="Gestão · Documento 01">
+              <span class="gallery-art" aria-hidden="true"></span>
+              <span class="gallery-index">01</span>
+              <span class="gallery-caption">Cronograma físico-financeiro <em>Ampliar ↗</em></span>
+            </button>
+            <button class="gallery-item" type="button" data-discipline="Administração de obra" data-title="Planilha orçamentária" data-meta="Gestão · Documento 02">
+              <span class="gallery-art" aria-hidden="true"></span>
+              <span class="gallery-index">02</span>
+              <span class="gallery-caption">Planilha orçamentária <em>Ampliar ↗</em></span>
+            </button>
+            <button class="gallery-item" type="button" data-discipline="Administração de obra" data-title="Diário de obra" data-meta="Gestão · Documento 03">
+              <span class="gallery-art" aria-hidden="true"></span>
+              <span class="gallery-index">03</span>
+              <span class="gallery-caption">Diário de obra <em>Ampliar ↗</em></span>
+            </button>
+            <button class="gallery-item" type="button" data-discipline="Administração de obra" data-title="Relatório fotográfico" data-meta="Fiscalização · Visita técnica">
+              <span class="gallery-art" aria-hidden="true"></span>
+              <span class="gallery-index">04</span>
+              <span class="gallery-caption">Relatório fotográfico <em>Ampliar ↗</em></span>
+            </button>
+            <button class="gallery-item" type="button" data-discipline="Administração de obra" data-title="Medição de etapa" data-meta="Controle · Documento 05">
+              <span class="gallery-art" aria-hidden="true"></span>
+              <span class="gallery-index">05</span>
+              <span class="gallery-caption">Medição de etapa <em>Ampliar ↗</em></span>
+            </button>
+            <button class="gallery-item" type="button" data-discipline="Administração de obra" data-title="Entrega e vistoria final" data-meta="Encerramento · Documento 06">
+              <span class="gallery-art" aria-hidden="true"></span>
+              <span class="gallery-index">06</span>
+              <span class="gallery-caption">Entrega e vistoria final <em>Ampliar ↗</em></span>
+            </button>
+          </div>
+
+          <div class="panel-foot">
+            <span class="content-pending">Imagens reais a inserir</span>
+            <a class="button" href="#administracao">Ver escopo completo</a>
+          </div>
         </div>
       </div>
     </section>
@@ -1752,32 +2560,158 @@
       <div class="services" id="servicos" aria-labelledby="services-title">
         <div class="page-shell services-header reveal">
           <p class="section-kicker">05 / Atuação</p>
-          <h2 class="section-title" id="services-title">Do planejamento à entrega.</h2>
+          <h2 class="section-title" id="services-title">Seis frentes, um único responsável.</h2>
         </div>
 
         <div class="page-shell services-grid">
           <article class="service-card reveal">
             <span class="service-number">01</span>
-            <h3>Planejamento e organização</h3>
-            <p>Análise das necessidades, definição das etapas e organização dos recursos necessários para uma execução mais segura e eficiente.</p>
+            <h3>Projeto arquitetônico</h3>
+            <p>Concepção do espaço, definição de fluxos e a documentação técnica completa para aprovação e execução da obra.</p>
+            <ul class="service-tags">
+              <li>Estudo preliminar</li>
+              <li>Anteprojeto</li>
+              <li>Executivo</li>
+              <li>Aprovação</li>
+            </ul>
+            <button class="service-link" type="button" data-tab="painel-arquitetonico"><span>Ver galeria</span> ↗</button>
           </article>
 
           <article class="service-card reveal">
             <span class="service-number">02</span>
-            <h3>Execução de obras</h3>
-            <p>Acompanhamento criterioso das atividades, dos materiais e dos detalhes construtivos durante todo o desenvolvimento do projeto.</p>
+            <h3>Design de interiores</h3>
+            <p>Layout, marcenaria sob medida, iluminação e especificação de acabamentos para ambientes funcionais e bem resolvidos.</p>
+            <ul class="service-tags">
+              <li>Layout</li>
+              <li>Marcenaria</li>
+              <li>Iluminação</li>
+              <li>Acabamentos</li>
+            </ul>
+            <button class="service-link" type="button" data-tab="painel-interiores"><span>Ver galeria</span> ↗</button>
           </article>
 
           <article class="service-card reveal">
             <span class="service-number">03</span>
-            <h3>Gestão e acompanhamento</h3>
-            <p>Controle das etapas da obra, alinhamento com profissionais envolvidos e comunicação transparente com o cliente.</p>
+            <h3>Projeto estrutural</h3>
+            <p>Dimensionamento de fundação, pilares, vigas e lajes com memorial de cálculo e detalhamento para uma execução segura.</p>
+            <ul class="service-tags">
+              <li>Fundação</li>
+              <li>Fôrmas</li>
+              <li>Armação</li>
+              <li>Memorial</li>
+            </ul>
+            <button class="service-link" type="button" data-tab="painel-estrutural"><span>Ver galeria</span> ↗</button>
           </article>
 
           <article class="service-card reveal">
             <span class="service-number">04</span>
-            <h3>Reformas e melhorias</h3>
-            <p>Transformação e atualização de ambientes com soluções que valorizam o espaço, a funcionalidade e a estrutura existente.</p>
+            <h3>Projeto hidráulico</h3>
+            <p>Redes de água fria e quente, esgoto, ventilação e águas pluviais traçadas e compatibilizadas antes da alvenaria.</p>
+            <ul class="service-tags">
+              <li>Água fria/quente</li>
+              <li>Esgoto</li>
+              <li>Pluvial</li>
+              <li>Reservação</li>
+            </ul>
+            <button class="service-link" type="button" data-tab="painel-hidraulico"><span>Ver galeria</span> ↗</button>
+          </article>
+
+          <article class="service-card reveal">
+            <span class="service-number">05</span>
+            <h3>Projeto elétrico</h3>
+            <p>Entrada de energia, quadros, circuitos, infraestrutura e luminotécnico com previsão de carga e proteção adequadas.</p>
+            <ul class="service-tags">
+              <li>Quadros</li>
+              <li>Circuitos</li>
+              <li>Luminotécnico</li>
+              <li>SPDA</li>
+            </ul>
+            <button class="service-link" type="button" data-tab="painel-eletrico"><span>Ver galeria</span> ↗</button>
+          </article>
+
+          <article class="service-card reveal">
+            <span class="service-number">06</span>
+            <h3>Administração de obra</h3>
+            <p>Serviço adicional que conduz a obra do planejamento à entrega: cronograma, compras, contratações, fiscalização e prestação de contas.</p>
+            <ul class="service-tags">
+              <li>Cronograma</li>
+              <li>Custos</li>
+              <li>Fiscalização</li>
+              <li>Entrega</li>
+            </ul>
+            <button class="service-link" type="button" data-tab="painel-administracao"><span>Ver galeria</span> ↗</button>
+            <a class="service-link" href="#administracao"><span>Escopo completo e valor</span> ↓</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="admin-scope" id="administracao" aria-labelledby="admin-title">
+      <div class="page-shell admin-layout">
+        <div class="admin-aside reveal">
+          <p class="section-kicker">06 / Serviços adicionais</p>
+          <h2 class="section-title" id="admin-title">Administração de obras.</h2>
+          <p>Quando a Diniz assume a administração, o cliente passa a ter um único interlocutor responsável por prazos, custos, fornecedores e qualidade. Abaixo, o escopo completo do serviço, organizado pelas quatro etapas em que ele acontece.</p>
+
+          <div class="value-badge">
+            <span>Valor do serviço</span>
+            <strong>10% do valor da obra</strong>
+          </div>
+
+          <a class="button" href="#contato">Solicitar proposta</a>
+        </div>
+
+        <div class="admin-phases">
+          <article class="phase reveal">
+            <span class="phase-index">01</span>
+            <div>
+              <h3>Planejamento</h3>
+              <ul class="check-list">
+                <li>Planejamento inicial</li>
+                <li>Orçamento básico de fornecedores e prestadores</li>
+                <li>Mapa de serviços e prazos
+                  <small>Cronograma de compra e de serviços terceirizados</small>
+                </li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="phase reveal">
+            <span class="phase-index">02</span>
+            <div>
+              <h3>Estruturação</h3>
+              <ul class="check-list">
+                <li>Contratação de profissionais</li>
+                <li>Obtenção de licenças e autorizações</li>
+                <li>Aquisição de materiais</li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="phase reveal">
+            <span class="phase-index">03</span>
+            <div>
+              <h3>Execução e controle</h3>
+              <ul class="check-list">
+                <li>Supervisão da mão de obra</li>
+                <li>Fiscalização de obra</li>
+                <li>Acompanhamento técnico</li>
+                <li>Gestão do cronograma</li>
+                <li>Controle de custos</li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="phase reveal">
+            <span class="phase-index">04</span>
+            <div>
+              <h3>Condução e entrega</h3>
+              <ul class="check-list">
+                <li>Gestão de problemas</li>
+                <li>Comunicação com o cliente</li>
+                <li>Finalização e entrega</li>
+              </ul>
+            </div>
           </article>
         </div>
       </div>
@@ -1786,7 +2720,7 @@
     <section class="method" id="metodo" aria-labelledby="method-title">
       <div class="page-shell">
         <div class="method-heading reveal">
-          <p class="section-kicker">06 / Nosso processo</p>
+          <p class="section-kicker">07 / Nosso processo</p>
           <h2 class="section-title" id="method-title">Clareza em todas as etapas.</h2>
         </div>
 
@@ -1814,7 +2748,7 @@
     <section class="trust" aria-labelledby="trust-title">
       <div class="page-shell">
         <div class="trust-intro reveal">
-          <span class="section-index">07 / 10</span>
+          <span class="section-index">08 / 11</span>
           <div>
             <p class="section-kicker">Uma construção bem conduzida</p>
             <h2 class="section-title" id="trust-title">Confiança também faz parte da obra.</h2>
@@ -1845,7 +2779,7 @@
     <section class="testimonials" aria-labelledby="testimonials-title">
       <div class="page-shell">
         <div class="testimonial-heading reveal">
-          <p class="section-kicker">08 / Experiências construídas</p>
+          <p class="section-kicker">09 / Experiências construídas</p>
           <h2 class="section-title" id="testimonials-title">A confiança dos nossos clientes também faz parte do portfólio.</h2>
         </div>
 
@@ -1875,20 +2809,34 @@
       <div class="page-shell">
         <div class="contact-heading reveal">
           <div>
-            <p class="section-kicker">09 / Seu projeto pode ser o próximo</p>
+            <p class="section-kicker">10 / Seu projeto pode ser o próximo</p>
             <h2 class="section-title" id="contact-title">Vamos construir essa história juntos?</h2>
           </div>
           <div>
             <p>Conte-nos sobre o seu projeto. Nossa equipe está pronta para entender suas necessidades e apresentar os próximos passos.</p>
-            <a class="text-link" href="#formulario">Solicitar um orçamento</a>
-            <br>
-            <a class="text-link" href="#formulario">Ou fale pelo WhatsApp</a>
+
+            <dl class="contact-lines">
+              <div class="contact-line">
+                <dt>Telefone</dt>
+                <dd><a href="tel:+5519996315037">(19) 99631-5037</a></dd>
+              </div>
+              <div class="contact-line">
+                <dt>E-mail</dt>
+                <dd><a href="mailto:dinizconstrutoradiretoria@gmail.com">dinizconstrutoradiretoria@gmail.com</a></dd>
+              </div>
+              <div class="contact-line">
+                <dt>Endereço</dt>
+                <dd>Rua Rio Branco, 53 — Centro<br>Nova Odessa / SP</dd>
+              </div>
+            </dl>
+
+            <a class="text-link" href="https://wa.me/5519996315037" target="_blank" rel="noopener">Falar pelo WhatsApp</a>
           </div>
         </div>
 
         <div class="form-layout" id="formulario">
           <div class="reveal">
-            <p class="section-kicker">10 / Fale com a Diniz</p>
+            <p class="section-kicker">11 / Fale com a Diniz</p>
             <p class="form-note">Wireframe de formulário. Integração de envio e WhatsApp será definida na etapa de desenvolvimento.</p>
           </div>
 
@@ -1946,14 +2894,16 @@
         <div class="footer-brand">
           <h2>Diniz Construtora e Empreendimentos</h2>
           <p>Construções conduzidas com planejamento, responsabilidade e atenção aos detalhes.</p>
+          <p>Rua Rio Branco, 53 — Centro, Nova Odessa / SP</p>
         </div>
 
         <div class="footer-column">
           <h3>Navegação</h3>
           <nav class="footer-nav" aria-label="Navegação do rodapé">
             <a href="#projetos">Projetos</a>
-            <a href="#sobre">Sobre</a>
             <a href="#servicos">Serviços</a>
+            <a href="#administracao">Administração de obras</a>
+            <a href="#sobre">Sobre</a>
             <a href="#contato">Contato</a>
           </nav>
         </div>
@@ -1961,9 +2911,10 @@
         <div class="footer-column">
           <h3>Canais</h3>
           <nav class="footer-nav" aria-label="Redes e canais de contato">
+            <a href="https://wa.me/5519996315037" target="_blank" rel="noopener">WhatsApp ↗</a>
+            <a href="tel:+5519996315037">(19) 99631-5037 ↗</a>
+            <a href="mailto:dinizconstrutoradiretoria@gmail.com">E-mail ↗</a>
             <a href="#contato">Instagram ↗</a>
-            <a href="#contato">WhatsApp ↗</a>
-            <a href="#contato">E-mail ↗</a>
           </nav>
         </div>
       </div>
@@ -1981,18 +2932,22 @@
 
   <dialog class="project-dialog" id="project-dialog" aria-labelledby="dialog-title">
     <div class="dialog-head">
-      <span>Estrutura sugerida / Estudo de caso</span>
+      <span id="dialog-discipline">Galeria / Disciplina</span>
       <button class="dialog-close" type="button" aria-label="Fechar detalhes">×</button>
     </div>
+    <div class="dialog-figure" aria-hidden="true">
+      <span class="dialog-art"></span>
+      <span class="dialog-figure-note" id="dialog-meta">Registro</span>
+    </div>
     <div class="dialog-content">
-      <p class="section-kicker">Projeto selecionado</p>
-      <h2 id="dialog-title">[Nome do projeto]</h2>
-      <p>Na versão final, cada projeto poderá abrir uma página ou apresentação com narrativa própria. Este wireframe reserva os quatro blocos essenciais abaixo.</p>
+      <p class="section-kicker">Registro selecionado</p>
+      <h2 id="dialog-title">[Nome do registro]</h2>
+      <p>Na versão final, cada item da galeria abre a imagem em alta resolução com a legenda técnica completa. Este wireframe reserva os quatro blocos de informação abaixo.</p>
       <div class="dialog-blueprint">
         <div><strong>01 / Contexto</strong><span>Necessidade e perfil do projeto</span></div>
         <div><strong>02 / Desafio</strong><span>Restrições e decisões importantes</span></div>
         <div><strong>03 / Solução</strong><span>Estratégia, materiais e execução</span></div>
-        <div><strong>04 / Resultado</strong><span>Galeria final e dados relevantes</span></div>
+        <div><strong>04 / Resultado</strong><span>Imagem final e dados relevantes</span></div>
       </div>
     </div>
   </dialog>
@@ -2002,10 +2957,13 @@
       const menuButton = document.querySelector('.menu-button');
       const mainNav = document.querySelector('.main-nav');
       const navLinks = [...document.querySelectorAll('.main-nav a')];
-      const sections = [...document.querySelectorAll('main section[id]')];
+      const sections = [...document.querySelectorAll('main section[id], main .services[id]')];
       const projectDialog = document.querySelector('#project-dialog');
       const dialogTitle = document.querySelector('#dialog-title');
-      const projectButtons = document.querySelectorAll('.project-open');
+      const dialogDiscipline = document.querySelector('#dialog-discipline');
+      const dialogMeta = document.querySelector('#dialog-meta');
+      const galleryItems = [...document.querySelectorAll('.gallery-item')];
+      const tabs = [...document.querySelectorAll('.tab')];
       const closeDialog = document.querySelector('.dialog-close');
       const form = document.querySelector('#contact-form');
       const formStatus = document.querySelector('#form-status');
@@ -2050,9 +3008,52 @@
 
       sections.forEach((section) => navObserver.observe(section));
 
-      projectButtons.forEach((button) => {
-        button.addEventListener('click', () => {
-          dialogTitle.textContent = button.dataset.project;
+      const selectTab = (index, { focus = true } = {}) => {
+        tabs.forEach((tab, position) => {
+          const isSelected = position === index;
+          const panel = document.querySelector('#' + tab.getAttribute('aria-controls'));
+
+          tab.setAttribute('aria-selected', String(isSelected));
+          tab.tabIndex = isSelected ? 0 : -1;
+          panel.hidden = !isSelected;
+        });
+
+        const active = tabs[index];
+        if (focus) active.focus({ preventScroll: true });
+        active.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+      };
+
+      tabs.forEach((tab, index) => {
+        tab.addEventListener('click', () => selectTab(index, { focus: false }));
+
+        tab.addEventListener('keydown', (event) => {
+          const moves = {
+            ArrowRight: index + 1,
+            ArrowLeft: index - 1,
+            Home: 0,
+            End: tabs.length - 1
+          };
+
+          if (!(event.key in moves)) return;
+          event.preventDefault();
+          selectTab((moves[event.key] + tabs.length) % tabs.length);
+        });
+      });
+
+      document.querySelectorAll('[data-tab]').forEach((trigger) => {
+        trigger.addEventListener('click', () => {
+          const index = tabs.findIndex((tab) => tab.getAttribute('aria-controls') === trigger.dataset.tab);
+          if (index < 0) return;
+          selectTab(index, { focus: false });
+          document.querySelector('#projetos').scrollIntoView();
+        });
+      });
+
+      galleryItems.forEach((item) => {
+        item.addEventListener('click', () => {
+          dialogTitle.textContent = item.dataset.title;
+          dialogDiscipline.textContent = 'Galeria / ' + item.dataset.discipline;
+          dialogMeta.textContent = item.dataset.meta;
           if (typeof projectDialog.showModal === 'function') {
             projectDialog.showModal();
           }
