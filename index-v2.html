@@ -84,6 +84,7 @@
     p { margin: 0 0 1.1em; }
     p:last-child { margin-bottom: 0; }
     ul, ol { margin: 0; padding: 0; list-style: none; }
+    figure { margin: 0; }
     a { color: inherit; text-decoration: none; }
     img, svg { display: block; max-width: 100%; }
     button, input, select, textarea { font: inherit; color: inherit; }
@@ -811,15 +812,14 @@
     .panel-meta { display: grid; gap: 10px; justify-items: start; }
     .panel-meta span { font: 10.5px/1.5 var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--muted-inv); }
     .panel-meta span:first-child { color: var(--gold-lift); }
+    .panel-meta .carousel-arrows { margin-top: 4px; }
 
-    .plates {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 20px;
-    }
+    .plates-viewport { margin-bottom: 8px; }
     .plate {
       position: relative;
-      display: block; width: 100%;
+      display: block;
+      flex: 0 0 min(340px, 82vw);
+      scroll-snap-align: start;
       text-align: left;
       padding: 0;
       border: 1px solid var(--ink-3);
@@ -841,11 +841,14 @@
       overflow: hidden;
     }
     .plate-art img {
+      position: absolute; inset: 0;
       width: 100%; height: 100%;
       object-fit: cover;
       filter: saturate(.9) contrast(1.02);
       transition: transform 760ms var(--ease-out), filter 520ms var(--ease);
     }
+    /* fotos em pé mostram o enquadramento inteiro em vez de cortar no recorte 4:3 */
+    .plate--portrait .plate-art img { object-fit: contain; }
     .plate:hover .plate-art img, .plate:focus-visible .plate-art img {
       transform: scale(1.035);
       filter: saturate(1) contrast(1);
@@ -1096,21 +1099,20 @@
     /* ============================================================
        14. SERVIÇOS
        ============================================================ */
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 1px;
-      background: var(--line);
-      border: 1px solid var(--line);
-    }
+    .services-headfoot { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; }
+    .services-headfoot p { max-width: 46ch; }
+    .services-viewport { margin-top: clamp(30px, 4vw, 46px); }
     .card {
       position: relative;
       display: flex; flex-direction: column;
       gap: 14px;
+      flex: 0 0 min(320px, 82vw);
+      scroll-snap-align: start;
       padding: clamp(26px, 2.6vw, 40px);
+      border: 1px solid var(--line);
       background: var(--bone);
       overflow: hidden;
-      transition: background 420ms var(--ease);
+      transition: background 420ms var(--ease), border-color 380ms var(--ease), transform 460ms var(--ease-out);
     }
     .card::before {
       content: ""; position: absolute; inset: 0;
@@ -1118,7 +1120,7 @@
       opacity: 0;
       transition: opacity 500ms var(--ease);
     }
-    .card:hover { background: var(--white); }
+    .card:hover { background: var(--white); border-color: var(--gold); transform: translateY(-5px); }
     .card:hover::before { opacity: .55; }
     /* cotas que "medem" o card no hover */
     .card::after {
@@ -1217,44 +1219,88 @@
     .checks small { display: block; margin-top: 4px; font: 10.5px/1.5 var(--mono); letter-spacing: .1em; color: var(--muted-inv); }
 
     /* ============================================================
-       16. MÉTODO — cronograma que se constrói
+       16. CARROSSEL — controles e viewport compartilhados
        ============================================================ */
-    .method-track {
+    .carousel-arrows { display: flex; gap: 10px; flex: 0 0 auto; }
+    .carousel-arrow {
+      display: grid; place-items: center;
+      width: 46px; height: 46px;
+      background: var(--black); color: var(--gold-lift);
+      border: 1px solid var(--ink-4);
+      font: 15px/1 var(--mono);
+      cursor: pointer;
+      transition: border-color 300ms var(--ease), opacity 300ms var(--ease);
+    }
+    .carousel-arrow i { font-style: normal; }
+    .carousel-arrow:hover:not(:disabled), .carousel-arrow:focus-visible:not(:disabled) { border-color: var(--gold); }
+    .carousel-arrow:disabled { opacity: .3; cursor: default; }
+    .sec--dark .carousel-arrow { background: var(--ink-2); border-color: rgba(247, 246, 242, .22); }
+
+    .carousel-viewport {
+      overflow-x: auto;
+      overflow-y: hidden;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    .carousel-viewport::-webkit-scrollbar { display: none; }
+    .carousel-rail {
+      display: flex; gap: 20px;
+      list-style: none; margin: 0; padding: 4px 4px 10px;
+    }
+
+    .carousel-dots { display: flex; justify-content: center; gap: 8px; margin-top: 26px; }
+    .carousel-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      border: none; padding: 0;
+      background: var(--line);
+      cursor: pointer;
+      transition: background 300ms var(--ease), transform 300ms var(--ease);
+    }
+    .carousel-dot.is-active { background: var(--gold); transform: scale(1.3); }
+    .sec--dark .carousel-dot { background: var(--line-inv); }
+
+    /* ---- Método: etapas com fotos ---- */
+    .method-headfoot { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; }
+    .method-headfoot p { max-width: 46ch; }
+    .method-viewport { margin-top: clamp(30px, 4vw, 46px); }
+    .mstep {
       position: relative;
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: clamp(18px, 2.4vw, 40px);
-      padding-top: 54px;
+      flex: 0 0 min(300px, 78vw);
+      scroll-snap-align: start;
+      border: 1px solid var(--line);
+      background: var(--bone);
+      overflow: hidden;
+      transition: border-color 380ms var(--ease), background 380ms var(--ease), transform 460ms var(--ease-out);
     }
-    .method-track::before {
-      content: ""; position: absolute; left: 0; right: 0; top: 26px; height: 1px;
-      background: repeating-linear-gradient(90deg, var(--line) 0 6px, transparent 6px 12px);
+    .mstep:hover { border-color: var(--gold); background: var(--white); transform: translateY(-5px); }
+    .mstep-art {
+      position: relative; aspect-ratio: 4 / 3; overflow: hidden;
+      background-image: var(--grid-light); background-size: 44px 44px;
     }
-    .method-track::after {
-      content: ""; position: absolute; left: 0; top: 26px; height: 1px; width: 100%;
-      background: var(--gold);
-      transform: scaleX(0); transform-origin: left;
-      transition: transform 2200ms var(--ease-out);
+    .mstep-art img {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: cover; filter: saturate(.92) contrast(1.02);
+      transition: transform 760ms var(--ease-out), filter 520ms var(--ease);
     }
-    .method-track.is-visible::after { transform: scaleX(1); }
-    .step { position: relative; }
-    .step .dot {
-      position: absolute; top: -33px; left: 0;
-      width: 14px; height: 14px;
-      background: var(--bone-2);
-      border: 1px solid var(--ink);
-      transform: rotate(45deg) scale(.4);
+    .mstep:hover .mstep-art img { transform: scale(1.045); filter: saturate(1) contrast(1); }
+    .mstep-art::after {
+      content: ""; position: absolute; inset: 0;
+      background: var(--hatch-gold);
       opacity: 0;
-      transition: transform 620ms var(--ease-lift), opacity 400ms var(--ease), background 400ms var(--ease);
+      transition: opacity 460ms var(--ease);
     }
-    .method-track.is-visible .step .dot { transform: rotate(45deg) scale(1); opacity: 1; }
-    .method-track.is-visible .step:nth-child(1) .dot { transition-delay: 120ms; }
-    .method-track.is-visible .step:nth-child(2) .dot { transition-delay: 480ms; }
-    .method-track.is-visible .step:nth-child(3) .dot { transition-delay: 840ms; }
-    .method-track.is-visible .step:nth-child(4) .dot { transition-delay: 1200ms; background: var(--gold); }
-    .step .n { font: 10.5px/1 var(--mono); letter-spacing: .2em; color: var(--gold-deep); }
-    .step h3 { margin: 12px 0 10px; }
-    .step p { color: var(--muted); font-size: 15.5px; }
+    .mstep:hover .mstep-art::after { opacity: 1; }
+    .mstep-n {
+      position: absolute; top: 12px; left: 12px; z-index: 2;
+      font: 10px/1 var(--mono); letter-spacing: .18em; color: var(--gold-deep);
+      padding: 7px 8px;
+      background: rgba(247, 246, 242, .92);
+      border: 1px solid var(--line);
+    }
+    .mstep-cap { padding: 18px 20px 20px; border-top: 1px dashed var(--line); }
+    .mstep-cap h3 { margin: 0 0 8px; }
+    .mstep-cap p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.5; }
 
     /* ============================================================
        17. CONFIANÇA
@@ -1308,6 +1354,7 @@
     .quote figcaption span { font: 10.5px/1 var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
     .quote .pending { border-color: var(--line); color: var(--muted); margin-bottom: 18px; }
     .quote .pending::before { background: var(--gold); }
+    .quote-stars { display: block; margin-bottom: 18px; font-size: 14px; letter-spacing: 4px; color: var(--gold); }
 
     /* ============================================================
        19. CONTATO + FORMULÁRIO
@@ -1606,8 +1653,6 @@
        24. RESPONSIVO
        ============================================================ */
     @media (max-width: 1180px) {
-      .plates { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .trust-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
 
@@ -1628,9 +1673,7 @@
       .sec-head { gap: 22px; align-items: start; }
       .about-figure { padding: 0 0 26px 20px; }
       .about-figure .badge { right: 0; bottom: -10px; }
-      .method-track { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 46px; }
-      .method-track::before, .method-track::after { display: none; }
-      .step .dot { position: static; opacity: 1; transform: rotate(45deg); margin-bottom: 16px; }
+      .method-headfoot, .services-headfoot { flex-direction: column; align-items: flex-start; gap: 16px; }
       .lb-art { border-right: 0; border-bottom: 1px dashed var(--ink-4); }
       .sec-index { display: none; }
     }
@@ -1646,14 +1689,25 @@
       .hero-plate .dim-x { left: 20px; right: 20px; }
       .hero-plate .dim-y, .plate-tag--tr { display: none; }
       .hero-plate .scan { left: 20px; right: 20px; top: 20px; }
-      .plates, .cards, .trust-grid, .quotes, .form-grid, .method-track { grid-template-columns: 1fr; }
+      .trust-grid, .quotes, .form-grid { grid-template-columns: 1fr; }
+      .mstep, .card { flex-basis: 82vw; }
+      .plate { flex-basis: 84vw; }
+      .carousel-arrows { display: none; }
       .stats { grid-template-columns: 1fr; }
       .stat { border-right: 0; border-bottom: 1px dashed var(--ink-4); }
       .phase { grid-template-columns: 1fr; gap: 16px; }
       .phase-n { flex-direction: row; align-items: center; gap: 12px; }
       .contact-line { grid-template-columns: 1fr; gap: 6px; }
       .contact-figure { grid-template-columns: 1fr; }
-      .contact-figure .frame { max-width: 160px; }
+      .contact-figure .frame { width: 100%; max-width: none; aspect-ratio: 3 / 4; }
+      .contact-figure img { object-position: 50% 24%; }
+      .about-figure { padding: 0 0 64px; }
+      .about-figure .frame { aspect-ratio: 4 / 5; }
+      .about-figure img { object-position: 50% 50%; }
+      .about-figure .dim-side { left: -8px; top: 0; bottom: 64px; }
+      .about-figure .badge { left: 14px; right: 0; bottom: 0; padding: 18px 20px; }
+      .plate--portrait .plate-art { aspect-ratio: 4 / 5; }
+      .model-stage { aspect-ratio: 4 / 3; }
       .about-list li { grid-template-columns: 1fr; gap: 6px; }
       .mobile-cta { display: flex; }
       .to-top { display: none; }
@@ -1681,8 +1735,8 @@
       .hero-draft path, .hero-draft line, .hero-draft rect, .hero-draft circle,
       .plate-art svg [data-draw], .lb-art svg [data-draw] { stroke-dashoffset: 0; }
       .ticker-track { animation: none; }
-      .method-track::after, .stat::after { transform: scaleX(1); }
-      .step .dot { opacity: 1; transform: rotate(45deg); }
+      .stat::after { transform: scaleX(1); }
+      .carousel-viewport { scroll-behavior: auto; }
     }
 
     @media print {
@@ -1961,9 +2015,7 @@
             </li>
           </ul>
 
-          <p style="margin-top:30px">
-            <a class="link" href="#contato">Solicitar uma conversa <i aria-hidden="true">↗</i></a>
-          </p>
+          <a class="btn btn--gold" style="margin-top:30px" href="#contato"><span>Solicitar uma conversa</span><i aria-hidden="true">↗</i></a>
         </div>
 
         <figure class="award-figure reveal" data-delay="1">
@@ -1988,58 +2040,68 @@
             <p class="kicker">06 / Atuação</p>
             <h2 class="h2" id="services-title">Seis frentes, um único responsável.</h2>
           </div>
-          <p>Cada serviço pode ser contratado isoladamente ou em conjunto. Quando reunidos, os projetos chegam à obra já compatibilizados entre si.</p>
+          <div class="services-headfoot">
+            <p>Cada serviço pode ser contratado isoladamente ou em conjunto. Quando reunidos, os projetos chegam à obra já compatibilizados entre si.</p>
+            <div class="carousel-arrows">
+              <button class="carousel-arrow" type="button" id="services-prev" aria-label="Serviço anterior"><i aria-hidden="true">←</i></button>
+              <button class="carousel-arrow" type="button" id="services-next" aria-label="Próximo serviço"><i aria-hidden="true">→</i></button>
+            </div>
+          </div>
         </div>
 
-        <div class="cards">
-          <article class="card reveal">
-            <span class="card-n">01</span>
-            <h3 class="h3">Projeto arquitetônico</h3>
-            <p>Concepção do espaço, definição de fluxos e a documentação técnica completa para aprovação e execução da obra.</p>
-            <ul class="card-tags"><li>Estudo preliminar</li><li>Anteprojeto</li><li>Executivo</li><li>Aprovação</li></ul>
-            <button class="card-link" type="button" data-goto="1"><span class="lozenge" aria-hidden="true"></span> Ver prancha</button>
-          </article>
+        <div class="services-viewport carousel-viewport reveal" id="services-viewport">
+          <div class="cards carousel-rail" id="services-rail">
+            <article class="card">
+              <span class="card-n">01</span>
+              <h3 class="h3">Projeto arquitetônico</h3>
+              <p>Concepção do espaço, definição de fluxos e a documentação técnica completa para aprovação e execução da obra.</p>
+              <ul class="card-tags"><li>Estudo preliminar</li><li>Anteprojeto</li><li>Executivo</li><li>Aprovação</li></ul>
+              <button class="card-link" type="button" data-goto="1"><span class="lozenge" aria-hidden="true"></span> Ver prancha</button>
+            </article>
 
-          <article class="card reveal" data-delay="1">
-            <span class="card-n">02</span>
-            <h3 class="h3">Design de interiores</h3>
-            <p>Layout, marcenaria sob medida, iluminação e especificação de acabamentos para ambientes funcionais e bem resolvidos.</p>
-            <ul class="card-tags"><li>Layout</li><li>Marcenaria</li><li>Iluminação</li><li>Acabamentos</li></ul>
-            <button class="card-link" type="button" data-goto="2"><span class="lozenge" aria-hidden="true"></span> Ver prancha</button>
-          </article>
+            <article class="card">
+              <span class="card-n">02</span>
+              <h3 class="h3">Design de interiores</h3>
+              <p>Layout, marcenaria sob medida, iluminação e especificação de acabamentos para ambientes funcionais e bem resolvidos.</p>
+              <ul class="card-tags"><li>Layout</li><li>Marcenaria</li><li>Iluminação</li><li>Acabamentos</li></ul>
+              <button class="card-link" type="button" data-goto="2"><span class="lozenge" aria-hidden="true"></span> Ver prancha</button>
+            </article>
 
-          <article class="card reveal" data-delay="2">
-            <span class="card-n">03</span>
-            <h3 class="h3">Projeto estrutural</h3>
-            <p>Dimensionamento de fundação, pilares, vigas e lajes com memorial de cálculo e detalhamento para uma execução segura.</p>
-            <ul class="card-tags"><li>Fundação</li><li>Fôrmas</li><li>Armação</li><li>Memorial</li></ul>
-            <button class="card-link" type="button" data-goto="3"><span class="lozenge" aria-hidden="true"></span> Ver prancha</button>
-          </article>
+            <article class="card">
+              <span class="card-n">03</span>
+              <h3 class="h3">Projeto estrutural</h3>
+              <p>Dimensionamento de fundação, pilares, vigas e lajes com memorial de cálculo e detalhamento para uma execução segura.</p>
+              <ul class="card-tags"><li>Fundação</li><li>Fôrmas</li><li>Armação</li><li>Memorial</li></ul>
+              <button class="card-link" type="button" data-goto="3"><span class="lozenge" aria-hidden="true"></span> Ver prancha</button>
+            </article>
 
-          <article class="card reveal">
-            <span class="card-n">04</span>
-            <h3 class="h3">Projeto hidráulico</h3>
-            <p>Redes de água fria e quente, esgoto, ventilação e águas pluviais traçadas e compatibilizadas antes da alvenaria.</p>
-            <ul class="card-tags"><li>Água fria/quente</li><li>Esgoto</li><li>Pluvial</li><li>Reservação</li></ul>
-            <button class="card-link" type="button" data-goto="4"><span class="lozenge" aria-hidden="true"></span> Ver prancha</button>
-          </article>
+            <article class="card">
+              <span class="card-n">04</span>
+              <h3 class="h3">Projeto hidráulico</h3>
+              <p>Redes de água fria e quente, esgoto, ventilação e águas pluviais traçadas e compatibilizadas antes da alvenaria.</p>
+              <ul class="card-tags"><li>Água fria/quente</li><li>Esgoto</li><li>Pluvial</li><li>Reservação</li></ul>
+              <button class="card-link" type="button" data-goto="4"><span class="lozenge" aria-hidden="true"></span> Ver prancha</button>
+            </article>
 
-          <article class="card reveal" data-delay="1">
-            <span class="card-n">05</span>
-            <h3 class="h3">Projeto elétrico</h3>
-            <p>Entrada de energia, quadros, circuitos, infraestrutura e luminotécnico com previsão de carga e proteção adequadas.</p>
-            <ul class="card-tags"><li>Quadros</li><li>Circuitos</li><li>Luminotécnico</li><li>SPDA</li></ul>
-            <button class="card-link" type="button" data-goto="5"><span class="lozenge" aria-hidden="true"></span> Ver prancha</button>
-          </article>
+            <article class="card">
+              <span class="card-n">05</span>
+              <h3 class="h3">Projeto elétrico</h3>
+              <p>Entrada de energia, quadros, circuitos, infraestrutura e luminotécnico com previsão de carga e proteção adequadas.</p>
+              <ul class="card-tags"><li>Quadros</li><li>Circuitos</li><li>Luminotécnico</li><li>SPDA</li></ul>
+              <button class="card-link" type="button" data-goto="5"><span class="lozenge" aria-hidden="true"></span> Ver prancha</button>
+            </article>
 
-          <article class="card reveal" data-delay="2">
-            <span class="card-n">06</span>
-            <h3 class="h3">Administração de obra</h3>
-            <p>Serviço adicional que conduz a obra do planejamento à entrega: cronograma, compras, contratações, fiscalização e prestação de contas.</p>
-            <ul class="card-tags"><li>Cronograma</li><li>Custos</li><li>Fiscalização</li><li>Entrega</li></ul>
-            <a class="card-link" href="#administracao"><span class="lozenge" aria-hidden="true"></span> Escopo completo</a>
-          </article>
+            <article class="card">
+              <span class="card-n">06</span>
+              <h3 class="h3">Administração de obra</h3>
+              <p>Serviço adicional que conduz a obra do planejamento à entrega: cronograma, compras, contratações, fiscalização e prestação de contas.</p>
+              <ul class="card-tags"><li>Cronograma</li><li>Custos</li><li>Fiscalização</li><li>Entrega</li></ul>
+              <a class="card-link" href="#administracao"><span class="lozenge" aria-hidden="true"></span> Escopo completo</a>
+            </article>
+          </div>
         </div>
+
+        <div class="carousel-dots" id="services-dots" role="tablist" aria-label="Serviços"></div>
       </div>
     </section>
 
@@ -2051,11 +2113,6 @@
           <p class="kicker">07 / Serviço adicional</p>
           <h2 class="h2" id="admin-title">Administração de obras.</h2>
           <p style="margin-top:22px">Quando a Diniz assume a administração, o cliente passa a ter um único interlocutor responsável por prazos, custos, fornecedores e qualidade. Ao lado, o escopo completo, organizado pelas quatro etapas em que ele acontece.</p>
-
-          <div class="value-box">
-            <span>Valor do serviço</span>
-            <b>10% do valor da obra</b>
-          </div>
 
           <a class="btn btn--gold" href="#contato"><span>Solicitar proposta</span><i aria-hidden="true">↗</i></a>
         </div>
@@ -2123,35 +2180,63 @@
             <p class="kicker">08 / Nosso processo</p>
             <h2 class="h2" id="method-title">Clareza em todas as etapas.</h2>
           </div>
-          <p>O mesmo caminho em toda obra: entender, planejar, construir e entregar — com o cliente informado em cada passagem de etapa.</p>
+          <div class="method-headfoot">
+            <p>O mesmo caminho em toda obra: entender, planejar, construir e entregar — com o cliente informado em cada passagem de etapa.</p>
+            <div class="carousel-arrows">
+              <button class="carousel-arrow" type="button" id="method-prev" aria-label="Etapa anterior"><i aria-hidden="true">←</i></button>
+              <button class="carousel-arrow" type="button" id="method-next" aria-label="Próxima etapa"><i aria-hidden="true">→</i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="page-shell">
+        <div class="method-viewport carousel-viewport reveal" id="method-viewport">
+          <ol class="carousel-rail" id="method-rail">
+            <li class="mstep">
+              <div class="mstep-art">
+                <img src="assets/img_3780_1_1x.webp" alt="Profissional da Diniz Construtora em atendimento inicial ao cliente." loading="lazy" decoding="async">
+                <span class="mstep-n">Etapa 01</span>
+              </div>
+              <div class="mstep-cap">
+                <h3 class="h3">Compreensão</h3>
+                <p>Entendemos as necessidades, expectativas e características do projeto.</p>
+              </div>
+            </li>
+            <li class="mstep">
+              <div class="mstep-art">
+                <img src="assets/img_3856_1_1x.webp" alt="Direção da Diniz Construtora planejando no escritório da empresa." loading="lazy" decoding="async">
+                <span class="mstep-n">Etapa 02</span>
+              </div>
+              <div class="mstep-cap">
+                <h3 class="h3">Planejamento</h3>
+                <p>Organizamos escopo, etapas, prioridades e recursos para orientar a execução.</p>
+              </div>
+            </li>
+            <li class="mstep">
+              <div class="mstep-art">
+                <img src="assets/portfolio/estrutura-formas-escoramento.webp" alt="Obra em fase de estrutura, com fôrmas e escoramento de viga montados." loading="lazy" decoding="async">
+                <span class="mstep-n">Etapa 03</span>
+              </div>
+              <div class="mstep-cap">
+                <h3 class="h3">Construção</h3>
+                <p>Conduzimos a obra com acompanhamento próximo e atenção aos detalhes.</p>
+              </div>
+            </li>
+            <li class="mstep">
+              <div class="mstep-art">
+                <img src="assets/portfolio/arch-fachada-contemporanea.webp" alt="Fachada contemporânea de projeto entregue pela Diniz Construtora." loading="lazy" decoding="async">
+                <span class="mstep-n">Etapa 04</span>
+              </div>
+              <div class="mstep-cap">
+                <h3 class="h3">Entrega</h3>
+                <p>Finalizamos o projeto com responsabilidade, revisão e alinhamento com o cliente.</p>
+              </div>
+            </li>
+          </ol>
         </div>
 
-        <ol class="method-track" id="method-track">
-          <li class="step">
-            <span class="dot" aria-hidden="true"></span>
-            <span class="n">Etapa 01</span>
-            <h3 class="h3">Compreensão</h3>
-            <p>Entendemos as necessidades, expectativas e características do projeto.</p>
-          </li>
-          <li class="step">
-            <span class="dot" aria-hidden="true"></span>
-            <span class="n">Etapa 02</span>
-            <h3 class="h3">Planejamento</h3>
-            <p>Organizamos escopo, etapas, prioridades e recursos para orientar a execução.</p>
-          </li>
-          <li class="step">
-            <span class="dot" aria-hidden="true"></span>
-            <span class="n">Etapa 03</span>
-            <h3 class="h3">Construção</h3>
-            <p>Conduzimos a obra com acompanhamento próximo e atenção aos detalhes.</p>
-          </li>
-          <li class="step">
-            <span class="dot" aria-hidden="true"></span>
-            <span class="n">Etapa 04</span>
-            <h3 class="h3">Entrega</h3>
-            <p>Finalizamos o projeto com responsabilidade, revisão e alinhamento com o cliente.</p>
-          </li>
-        </ol>
+        <div class="carousel-dots" id="method-dots" role="tablist" aria-label="Etapas do processo"></div>
       </div>
     </section>
 
@@ -2204,20 +2289,38 @@
 
         <div class="quotes">
           <figure class="quote reveal">
-            <span class="pending">Depoimento real a inserir</span>
-            <blockquote>[Depoimento do cliente sobre atendimento, organização, qualidade da obra ou cumprimento dos acordos.]</blockquote>
+            <span class="quote-stars" aria-hidden="true">★★★★★</span>
+            <blockquote>“Amei a Diniz, entregou minha obra com sucesso! Tem ótimos profissionais!”</blockquote>
             <figcaption>
-              <b>[Nome do cliente]</b>
-              <span>[Projeto realizado]</span>
+              <b>Nivea Oliveira</b>
+              <span>Avaliação Google</span>
             </figcaption>
           </figure>
 
           <figure class="quote reveal" data-delay="1">
-            <span class="pending">Depoimento real a inserir</span>
-            <blockquote>[Segundo depoimento, preferencialmente destacando acompanhamento e resultado final.]</blockquote>
+            <span class="quote-stars" aria-hidden="true">★★★★★</span>
+            <blockquote>“Profissional atenta ao mercado. Com bom entendimento. E muito bem capacitada.”</blockquote>
             <figcaption>
-              <b>[Nome do cliente]</b>
-              <span>[Projeto realizado]</span>
+              <b>André Pantano</b>
+              <span>Avaliação Google</span>
+            </figcaption>
+          </figure>
+
+          <figure class="quote reveal">
+            <span class="quote-stars" aria-hidden="true">★★★★★</span>
+            <blockquote>“Experiência maravilhosa, pessoal atencioso, projetos maravilhosos!!!”</blockquote>
+            <figcaption>
+              <b>Karol Thomaz</b>
+              <span>Avaliação Google</span>
+            </figcaption>
+          </figure>
+
+          <figure class="quote reveal" data-delay="1">
+            <span class="quote-stars" aria-hidden="true">★★★★★</span>
+            <blockquote>“Profissionais qualificados e ambiente muito agradável.”</blockquote>
+            <figcaption>
+              <b>Guilherme Pelaquim</b>
+              <span>Avaliação Google</span>
             </figcaption>
           </figure>
         </div>
@@ -2244,11 +2347,11 @@
             </div>
             <div class="contact-line">
               <dt>Endereço</dt>
-              <dd>Rua Rio Branco, 53 — Centro<br>Nova Odessa / SP</dd>
+              <dd>Rua Rio Branco, 53 — Sala 4 — Centro<br>Nova Odessa / SP</dd>
             </div>
             <div class="contact-line">
               <dt>Atendimento</dt>
-              <dd>Segunda a sexta, 8h às 18h</dd>
+              <dd>Segunda a sexta, 9h às 18h</dd>
             </div>
           </dl>
 
@@ -2333,7 +2436,7 @@
         <div class="footer-brand">
           <img class="footer-logo" src="assets/logo_diniz_construtora_1.webp" width="2000" height="710" alt="Diniz Construtora e Empreendimentos" loading="lazy" decoding="async">
           <p>Construções conduzidas com planejamento, responsabilidade e atenção aos detalhes.</p>
-          <p style="margin-top:14px;font-size:14px">Rua Rio Branco, 53 — Centro<br>Nova Odessa / SP</p>
+          <p style="margin-top:14px;font-size:14px">Rua Rio Branco, 53 — Sala 4 — Centro<br>Nova Odessa / SP</p>
         </div>
 
         <div>
@@ -2650,6 +2753,8 @@
               title: 'Pilares e alvenaria',
               meta: 'Registro de obra · Estrutura 04',
               image: 'assets/portfolio/estrutura-pilares-alvenaria.webp',
+              orientation: 'portrait',
+              position: '50% 58%',
               alt: 'Pilares de concreto, alvenaria de blocos e andaime durante a execução estrutural de uma residência.',
               description: 'Registro da interface entre pilares de concreto e alvenaria de vedação, com andaime montado para continuidade dos serviços em altura.'
             },
@@ -2657,6 +2762,8 @@
               title: 'Fôrma de pilar e armação',
               meta: 'Registro de obra · Estrutura 05',
               image: 'assets/portfolio/estrutura-forma-pilar.webp',
+              orientation: 'portrait',
+              position: '50% 58%',
               alt: 'Fôrma de madeira em pilar, barras de espera e alvenaria de blocos em execução.',
               description: 'Detalhamento em obra da fôrma de pilar e das barras de espera, permitindo acompanhar a continuidade vertical da estrutura.'
             },
@@ -2664,6 +2771,8 @@
               title: 'Fôrmas e escoramento de viga',
               meta: 'Registro de obra · Estrutura 06',
               image: 'assets/portfolio/estrutura-formas-escoramento.webp',
+              orientation: 'portrait',
+              position: '50% 54%',
               alt: 'Conjunto de fôrmas e escoramentos de madeira montado para a execução de vigas e cobertura.',
               description: 'Montagem de fôrmas e escoramentos para vigas superiores, com travamentos distribuídos para a etapa de concretagem.'
             }
@@ -2678,12 +2787,12 @@
           model3d: {
             title: 'Residência Vinicius Diniz · Hidráulico',
             meta: 'Modelo BIM interativo · Instalações hidrossanitárias',
-            preview: 'assets/portfolio/hidraulico-piscina.webp',
-            previewAlt: 'Render de piscina residencial usado como capa do projeto hidráulico interativo.',
+            preview: 'assets/portfolio/hidraulico-isometrico-bim.webp',
+            previewAlt: 'Isométrico BIM das instalações hidrossanitárias, com aquecedor solar, reservatórios e traçado de tubulações.',
             href: 'https://service.usbim.com/link/6ivy9F85abbd817jBj5VnNw1',
-            embed: 'https://service.usbim.com/link/6ivy9F85abbd817jBj5VnNw1',
             provider: 'usBIM',
-            loadLabel: 'Explorar projeto BIM'
+            loadLabel: 'Abrir projeto BIM',
+            externalOnly: true
           },
           items: [
             {
@@ -2711,12 +2820,12 @@
           model3d: {
             title: 'Residência Vinicius Diniz · Elétrico',
             meta: 'Modelo BIM interativo · Instalações elétricas',
-            preview: 'assets/portfolio/eletrico-area-gourmet-01.webp',
-            previewAlt: 'Render luminotécnico de área gourmet usado como capa do projeto elétrico interativo.',
+            preview: 'assets/portfolio/eletrico-isometrico-bim.webp',
+            previewAlt: 'Isométrico BIM das instalações elétricas, com eletrodutos, quadros e traçado de circuitos.',
             href: 'https://service.usbim.com/link/KbSCnzp6jPJ1jaYGQ7bJR6ok',
-            embed: 'https://service.usbim.com/link/KbSCnzp6jPJ1jaYGQ7bJR6ok',
             provider: 'usBIM',
-            loadLabel: 'Explorar projeto BIM'
+            loadLabel: 'Abrir projeto BIM',
+            externalOnly: true
           },
           items: [
             {
@@ -2761,6 +2870,7 @@
               title: 'Evolução da garagem',
               meta: 'Registro de obra · Elevação e fechamento',
               image: 'assets/portfolio/administracao-evolucao-garagem.webp',
+              orientation: 'portrait',
               alt: 'Garagem residencial em obra com alvenaria, laje, materiais e agregados organizados no canteiro.',
               description: 'Acompanhamento da elevação e do fechamento da garagem, registrando a frente de serviço e os materiais disponíveis no canteiro.'
             },
@@ -2768,6 +2878,7 @@
               title: 'Fechamento da fachada',
               meta: 'Registro de obra · Preparação de fachada',
               image: 'assets/portfolio/administracao-fechamento-fachada.webp',
+              orientation: 'portrait',
               alt: 'Fachada residencial em preparação para acabamento, com andaimes, requadros e estruturas metálicas instaladas.',
               description: 'Registro da preparação da fachada para os acabamentos finais, incluindo requadros, andaimes e elementos metálicos.'
             },
@@ -2775,6 +2886,7 @@
               title: 'Acabamento da fachada',
               meta: 'Registro de obra · Revestimento externo',
               image: 'assets/portfolio/administracao-fachada-acabamento.webp',
+              orientation: 'portrait',
               alt: 'Vista frontal de residência com revestimento branco aplicado e garagem ainda em acabamento.',
               description: 'Evolução do revestimento externo e dos planos da fachada, com controle visual da uniformidade e dos encontros entre volumes.'
             },
@@ -2782,6 +2894,7 @@
               title: 'Detalhe de acabamento externo',
               meta: 'Registro de obra · Inspeção de fachada',
               image: 'assets/portfolio/administracao-detalhe-fachada.webp',
+              orientation: 'portrait',
               alt: 'Detalhe de volumes brancos e perfis escuros na fachada de uma residência em fase de acabamento.',
               description: 'Inspeção próxima dos planos revestidos, pingadeiras e encontros geométricos antes da conclusão da fachada.'
             }
@@ -2797,9 +2910,9 @@
         if (!panel) return;
 
         const plates = data.items.map((item, j) => `
-          <button class="plate" type="button" data-panel="${i}" data-item="${j}" aria-label="Ampliar ${item.title}">
+          <button class="plate${item.orientation === 'portrait' ? ' plate--portrait' : ''}" type="button" data-panel="${i}" data-item="${j}" aria-label="Ampliar ${item.title}">
             <span class="plate-art">
-              <img src="${item.image}" alt="" loading="lazy" decoding="async">
+              <img src="${item.image}" alt="${item.alt}"${item.position ? ` style="object-position: ${item.position}"` : ''} loading="lazy" decoding="async">
               <span class="plate-n">${pad(j + 1)}</span>
               <span class="plate-zoom" aria-hidden="true">↗</span>
             </span>
@@ -2820,10 +2933,14 @@
             </div>
             <div class="model-stage">
               <img src="${data.model3d.preview}" width="720" height="405" alt="${data.model3d.previewAlt || `Prévia do modelo 3D da ${data.model3d.title}.`}" loading="lazy" decoding="async">
-              <button class="model-load" type="button" data-model-load aria-label="Carregar modelo 3D interativo">
-                <i aria-hidden="true">▶</i><span>${data.model3d.loadLabel || 'Explorar modelo 3D'}</span>
-              </button>
-              <iframe hidden title="Modelo 3D interativo da ${data.model3d.title}" data-src="${data.model3d.embed}" loading="lazy" allow="autoplay; fullscreen; xr-spatial-tracking; accelerometer; gyroscope; clipboard-read; clipboard-write" sandbox="allow-scripts allow-same-origin allow-popups allow-forms allow-downloads" allowfullscreen></iframe>
+              ${data.model3d.externalOnly ? `
+                <a class="model-load" href="${data.model3d.href}" target="_blank" rel="noopener noreferrer" aria-label="Abrir ${data.model3d.title} no ${data.model3d.provider}">
+                  <i aria-hidden="true">↗</i><span>${data.model3d.loadLabel || 'Abrir projeto BIM'}</span>
+                </a>` : `
+                <button class="model-load" type="button" data-model-load aria-label="Carregar modelo 3D interativo">
+                  <i aria-hidden="true">▶</i><span>${data.model3d.loadLabel || 'Explorar modelo 3D'}</span>
+                </button>
+                <iframe hidden title="Modelo 3D interativo da ${data.model3d.title}" data-src="${data.model3d.embed}" loading="lazy" allow="autoplay; fullscreen; xr-spatial-tracking; accelerometer; gyroscope; clipboard-read; clipboard-write" sandbox="allow-scripts allow-same-origin allow-popups allow-forms allow-downloads" allowfullscreen></iframe>`}
             </div>
           </div>` : '';
 
@@ -2836,10 +2953,17 @@
             <div class="panel-meta">
               <span>${pad(data.items.length)} ${data.items.length === 1 ? 'registro' : 'registros'} no acervo</span>
               <span>${data.stages}</span>
+              <div class="carousel-arrows"${data.items.length > 1 ? '' : ' hidden'}>
+                <button class="carousel-arrow" type="button" id="plates-prev-${i + 1}" aria-label="Prancha anterior"><i aria-hidden="true">←</i></button>
+                <button class="carousel-arrow" type="button" id="plates-next-${i + 1}" aria-label="Próxima prancha"><i aria-hidden="true">→</i></button>
+              </div>
             </div>
           </div>
           ${model}
-          <div class="plates">${plates}</div>
+          <div class="plates-viewport carousel-viewport" id="plates-viewport-${i + 1}">
+            <div class="plates carousel-rail" id="plates-rail-${i + 1}">${plates}</div>
+          </div>
+          <div class="carousel-dots" id="plates-dots-${i + 1}" role="tablist" aria-label="Pranchas de ${data.title}"></div>
           <div class="panel-foot">
             <span class="pending">Galeria atualizada</span>
             <a class="btn btn--ghost" href="${data.ctaHref || '#contato'}"><span>${data.cta}</span><i aria-hidden="true">↗</i></a>
@@ -2918,7 +3042,7 @@
         });
       }, { threshold: 0.14, rootMargin: '0px 0px -6% 0px' });
 
-      $$('.reveal, .method-track').forEach((el) => revealObserver.observe(el));
+      $$('.reveal').forEach((el) => revealObserver.observe(el));
 
       const countUp = (el) => {
         const target = Number(el.dataset.count);
@@ -2945,6 +3069,101 @@
       }, { threshold: 0.6 });
 
       $$('[data-count]').forEach((el) => countObserver.observe(el));
+
+      /* ============================================================
+         CARROSSÉIS — util compartilhado (método, serviços, portfólio)
+         ============================================================ */
+      const initCarousel = ({ viewport, rail, items, prevBtn, nextBtn, dotsWrap }) => {
+        if (!viewport || !rail || !items.length) return null;
+
+        if (dotsWrap) {
+          dotsWrap.innerHTML = '';
+          items.forEach((item, i) => {
+            const dot = document.createElement('button');
+            dot.type = 'button';
+            dot.className = 'carousel-dot';
+            dot.setAttribute('role', 'tab');
+            dot.setAttribute('aria-label', `Ir para item ${i + 1}`);
+            dot.addEventListener('click', () => {
+              viewport.scrollTo({ left: item.offsetLeft - rail.offsetLeft, behavior: reduced ? 'auto' : 'smooth' });
+            });
+            dotsWrap.appendChild(dot);
+          });
+        }
+        const dots = dotsWrap ? $$('.carousel-dot', dotsWrap) : [];
+
+        const update = () => {
+          const maxScroll = viewport.scrollWidth - viewport.clientWidth;
+          const noScroll = maxScroll <= 4;
+          let closest = 0;
+          if (!noScroll) {
+            const center = viewport.scrollLeft + viewport.clientWidth / 2;
+            let min = Infinity;
+            items.forEach((item, i) => {
+              const mid = item.offsetLeft - rail.offsetLeft + item.offsetWidth / 2;
+              const dist = Math.abs(mid - center);
+              if (dist < min) { min = dist; closest = i; }
+            });
+          }
+          dots.forEach((dot, i) => {
+            const active = i === closest;
+            dot.classList.toggle('is-active', active);
+            dot.setAttribute('aria-selected', String(active));
+          });
+          if (prevBtn) prevBtn.disabled = noScroll || viewport.scrollLeft <= 4;
+          if (nextBtn) nextBtn.disabled = noScroll || viewport.scrollLeft >= maxScroll - 4;
+        };
+
+        let raf = null;
+        viewport.addEventListener('scroll', () => {
+          if (raf) return;
+          raf = requestAnimationFrame(() => { update(); raf = null; });
+        }, { passive: true });
+
+        const scrollByDir = (dir) => {
+          const gap = 20;
+          const amount = (items[0].offsetWidth + gap) * dir;
+          viewport.scrollBy({ left: amount, behavior: reduced ? 'auto' : 'smooth' });
+        };
+        prevBtn?.addEventListener('click', () => scrollByDir(-1));
+        nextBtn?.addEventListener('click', () => scrollByDir(1));
+
+        update();
+        window.addEventListener('resize', update, { passive: true });
+        return update;
+      };
+
+      const methodRail = $('#method-rail');
+      initCarousel({
+        viewport: $('#method-viewport'),
+        rail: methodRail,
+        items: $$('.mstep', methodRail),
+        prevBtn: $('#method-prev'),
+        nextBtn: $('#method-next'),
+        dotsWrap: $('#method-dots'),
+      });
+
+      const servicesRail = $('#services-rail');
+      initCarousel({
+        viewport: $('#services-viewport'),
+        rail: servicesRail,
+        items: $$('.card', servicesRail),
+        prevBtn: $('#services-prev'),
+        nextBtn: $('#services-next'),
+        dotsWrap: $('#services-dots'),
+      });
+
+      const platesCarouselUpdaters = DATA.map((data, i) => {
+        const rail = $('#plates-rail-' + (i + 1));
+        return initCarousel({
+          viewport: $('#plates-viewport-' + (i + 1)),
+          rail,
+          items: $$('.plate', rail),
+          prevBtn: $('#plates-prev-' + (i + 1)),
+          nextBtn: $('#plates-next-' + (i + 1)),
+          dotsWrap: $('#plates-dots-' + (i + 1)),
+        });
+      });
 
       /* ============================================================
          SCROLLSPY
@@ -2989,6 +3208,7 @@
         panel.classList.remove('is-drawing');
         void panel.offsetWidth;               // reinicia o traçado do desenho
         panel.classList.add('is-drawing');
+        platesCarouselUpdaters[index]?.();     // recalcula larguras do carrossel agora visível
 
         if (focus) tabs[index].focus({ preventScroll: true });
         tabs[index].scrollIntoView({ block: 'nearest', inline: 'nearest' });
