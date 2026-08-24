@@ -1068,7 +1068,9 @@
     }
     .award-figure:hover img { filter: none; transform: scale(1.03); }
     .award-seal {
-      position: absolute; top: -18px; right: -18px;
+      /* o anel gira 45°, então a caixa cresce ~√2: mantido dentro da coluna
+         para não gerar rolagem horizontal na página */
+      position: absolute; top: -16px; right: 8px;
       width: 104px; height: 104px;
       display: grid; place-items: center;
       color: var(--gold-lift);
@@ -2618,10 +2620,10 @@
               description: 'Composição residencial de dois pavimentos marcada por grandes aberturas, elementos naturais e uma implantação aberta para o jardim.'
             },
             {
-              title: 'Residência D',
+              title: 'Residência D&T',
               meta: 'Render arquitetônico · Fachada frontal',
               image: 'assets/portfolio/arch-residencia-debora.webp',
-              alt: 'Render frontal da Residência D, com garagem dupla, pedra clara e pano de vidro vertical.',
+              alt: 'Render frontal da Residência D&T, com garagem dupla, pedra clara e pano de vidro vertical.',
               description: 'Fachada frontal com garagem dupla, plano vertical envidraçado e materialidade clara valorizada pelo paisagismo.'
             },
             {
@@ -2637,13 +2639,6 @@
               image: 'assets/portfolio/arch-residencia-bruno-daniele.webp',
               alt: 'Render noturno de residência de dois pavimentos com pedra, ripado de madeira e iluminação de fachada.',
               description: 'Estudo noturno da fachada com pedra, ripado vertical e iluminação integrada à arquitetura e ao paisagismo.'
-            },
-            {
-              title: 'Jardim integrado',
-              meta: 'Render arquitetônico · Paisagismo',
-              image: 'assets/portfolio/arch-jardim-integrado.webp',
-              alt: 'Render de jardim interno com vegetação tropical, piso intercalado com grama e elementos vazados.',
-              description: 'Jardim interno concebido como extensão dos ambientes, combinando luz natural, vegetação tropical e percursos permeáveis.'
             }
           ]
         },
@@ -2662,7 +2657,7 @@
               description: 'Área social integrada em que cozinha, jantar e estar compartilham a mesma linguagem de madeira, pedra clara e iluminação quente.'
             },
             {
-              title: 'Suíte D',
+              title: 'Suíte D&T',
               meta: 'Render de interiores · Dormitório',
               image: 'assets/portfolio/interior-quarto-debora.webp',
               alt: 'Render de suíte em tons claros, com painéis amadeirados, poltronas e iluminação indireta.',
@@ -2716,6 +2711,13 @@
               image: 'assets/portfolio/interior-debora-integrado.webp',
               alt: 'Render de área gourmet integrada à piscina e ao jardim interno, com madeira e grandes aberturas.',
               description: 'Área gourmet conectada à piscina e ao jardim por grandes aberturas, promovendo continuidade entre interior e exterior.'
+            },
+            {
+              title: 'Jardim integrado',
+              meta: 'Render arquitetônico · Paisagismo',
+              image: 'assets/portfolio/arch-jardim-integrado.webp',
+              alt: 'Render de jardim interno com vegetação tropical, piso intercalado com grama e elementos vazados.',
+              description: 'Jardim interno concebido como extensão dos ambientes, combinando luz natural, vegetação tropical e percursos permeáveis.'
             }
           ]
         },
@@ -2724,6 +2726,7 @@
           title: 'Projeto estrutural',
           intro: 'Fundação, pilares, vigas e lajes dimensionados com memorial de cálculo, planta de fôrmas e detalhamento de armação para execução segura.',
           stages: 'Fundação · Fôrmas · Armação · Memorial',
+          galleryNote: 'Registros de obra na aba Administração',
           cta: 'Solicitar projeto estrutural',
           model3d: {
             title: 'Residência V',
@@ -2734,56 +2737,7 @@
             provider: 'Sketchfab',
             loadLabel: 'Explorar modelo 3D'
           },
-          items: [
-            {
-              title: 'Alvenaria e vigas',
-              meta: 'Registro de obra · Estrutura 01',
-              image: 'assets/portfolio/estrutura-alvenaria-01.webp',
-              alt: 'Vista aérea de residência em construção com alvenaria elevada, vigas e escoramentos.',
-              description: 'Registro aéreo da elevação das alvenarias e da execução das vigas, com organização dos ambientes já legível em obra.'
-            },
-            {
-              title: 'Fôrmas e escoramentos',
-              meta: 'Registro de obra · Estrutura 02',
-              image: 'assets/portfolio/estrutura-alvenaria-02.webp',
-              alt: 'Vista aérea próxima de fôrmas, escoramentos e paredes de uma residência em construção.',
-              description: 'Acompanhamento da montagem de fôrmas e escoramentos para concretagem dos elementos estruturais.'
-            },
-            {
-              title: 'Evolução estrutural',
-              meta: 'Registro de obra · Estrutura 03',
-              image: 'assets/portfolio/estrutura-alvenaria-03.webp',
-              alt: 'Vista aérea panorâmica de residência em fase estrutural, com alvenaria e fôrmas em execução.',
-              description: 'Visão geral da evolução estrutural da residência, registrando a compatibilização entre alvenaria, vigas e áreas abertas.'
-            },
-            {
-              title: 'Pilares e alvenaria',
-              meta: 'Registro de obra · Estrutura 04',
-              image: 'assets/portfolio/estrutura-pilares-alvenaria.webp',
-              orientation: 'portrait',
-              position: '50% 58%',
-              alt: 'Pilares de concreto, alvenaria de blocos e andaime durante a execução estrutural de uma residência.',
-              description: 'Registro da interface entre pilares de concreto e alvenaria de vedação, com andaime montado para continuidade dos serviços em altura.'
-            },
-            {
-              title: 'Fôrma de pilar e armação',
-              meta: 'Registro de obra · Estrutura 05',
-              image: 'assets/portfolio/estrutura-forma-pilar.webp',
-              orientation: 'portrait',
-              position: '50% 58%',
-              alt: 'Fôrma de madeira em pilar, barras de espera e alvenaria de blocos em execução.',
-              description: 'Detalhamento em obra da fôrma de pilar e das barras de espera, permitindo acompanhar a continuidade vertical da estrutura.'
-            },
-            {
-              title: 'Fôrmas e escoramento de viga',
-              meta: 'Registro de obra · Estrutura 06',
-              image: 'assets/portfolio/estrutura-formas-escoramento.webp',
-              orientation: 'portrait',
-              position: '50% 54%',
-              alt: 'Conjunto de fôrmas e escoramentos de madeira montado para a execução de vigas e cobertura.',
-              description: 'Montagem de fôrmas e escoramentos para vigas superiores, com travamentos distribuídos para a etapa de concretagem.'
-            }
-          ]
+          items: []
         },
         {
           discipline: 'Hidráulico',
@@ -2859,6 +2813,54 @@
           cta: 'Ver escopo completo',
           ctaHref: '#administracao',
           items: [
+            {
+              title: 'Alvenaria e vigas',
+              meta: 'Registro de obra · Estrutura 01',
+              image: 'assets/portfolio/estrutura-alvenaria-01.webp',
+              alt: 'Vista aérea de residência em construção com alvenaria elevada, vigas e escoramentos.',
+              description: 'Registro aéreo da elevação das alvenarias e da execução das vigas, com organização dos ambientes já legível em obra.'
+            },
+            {
+              title: 'Fôrmas e escoramentos',
+              meta: 'Registro de obra · Estrutura 02',
+              image: 'assets/portfolio/estrutura-alvenaria-02.webp',
+              alt: 'Vista aérea próxima de fôrmas, escoramentos e paredes de uma residência em construção.',
+              description: 'Acompanhamento da montagem de fôrmas e escoramentos para concretagem dos elementos estruturais.'
+            },
+            {
+              title: 'Evolução estrutural',
+              meta: 'Registro de obra · Estrutura 03',
+              image: 'assets/portfolio/estrutura-alvenaria-03.webp',
+              alt: 'Vista aérea panorâmica de residência em fase estrutural, com alvenaria e fôrmas em execução.',
+              description: 'Visão geral da evolução estrutural da residência, registrando a compatibilização entre alvenaria, vigas e áreas abertas.'
+            },
+            {
+              title: 'Pilares e alvenaria',
+              meta: 'Registro de obra · Estrutura 04',
+              image: 'assets/portfolio/estrutura-pilares-alvenaria.webp',
+              orientation: 'portrait',
+              position: '50% 58%',
+              alt: 'Pilares de concreto, alvenaria de blocos e andaime durante a execução estrutural de uma residência.',
+              description: 'Registro da interface entre pilares de concreto e alvenaria de vedação, com andaime montado para continuidade dos serviços em altura.'
+            },
+            {
+              title: 'Fôrma de pilar e armação',
+              meta: 'Registro de obra · Estrutura 05',
+              image: 'assets/portfolio/estrutura-forma-pilar.webp',
+              orientation: 'portrait',
+              position: '50% 58%',
+              alt: 'Fôrma de madeira em pilar, barras de espera e alvenaria de blocos em execução.',
+              description: 'Detalhamento em obra da fôrma de pilar e das barras de espera, permitindo acompanhar a continuidade vertical da estrutura.'
+            },
+            {
+              title: 'Fôrmas e escoramento de viga',
+              meta: 'Registro de obra · Estrutura 06',
+              image: 'assets/portfolio/estrutura-formas-escoramento.webp',
+              orientation: 'portrait',
+              position: '50% 54%',
+              alt: 'Conjunto de fôrmas e escoramentos de madeira montado para a execução de vigas e cobertura.',
+              description: 'Montagem de fôrmas e escoramentos para vigas superiores, com travamentos distribuídos para a etapa de concretagem.'
+            },
             {
               title: 'Acompanhamento de fachada',
               meta: 'Registro de obra · Julho de 2026',
@@ -2951,6 +2953,12 @@
             </div>
           </div>` : '';
 
+        // uma disciplina pode não ter galeria (ex.: estrutural, que se apresenta pelo modelo 3D)
+        const hasPlates = data.items.length > 0;
+        const acervo = hasPlates
+          ? `${pad(data.items.length)} ${data.items.length === 1 ? 'registro' : 'registros'} no acervo`
+          : (data.model3d ? 'Modelo 3D interativo' : 'Acervo em preparação');
+
         panel.innerHTML = `
           <div class="panel-head">
             <div>
@@ -2958,7 +2966,7 @@
               <p>${data.intro}</p>
             </div>
             <div class="panel-meta">
-              <span>${pad(data.items.length)} ${data.items.length === 1 ? 'registro' : 'registros'} no acervo</span>
+              <span>${acervo}</span>
               <span>${data.stages}</span>
               <div class="carousel-arrows"${data.items.length > 1 ? '' : ' hidden'}>
                 <button class="carousel-arrow" type="button" id="plates-prev-${i + 1}" aria-label="Prancha anterior"><i aria-hidden="true">←</i></button>
@@ -2967,12 +2975,13 @@
             </div>
           </div>
           ${model}
+          ${hasPlates ? `
           <div class="plates-viewport carousel-viewport" id="plates-viewport-${i + 1}">
             <div class="plates carousel-rail" id="plates-rail-${i + 1}">${plates}</div>
           </div>
-          <div class="carousel-dots" id="plates-dots-${i + 1}" role="tablist" aria-label="Pranchas de ${data.title}"></div>
+          <div class="carousel-dots" id="plates-dots-${i + 1}" role="tablist" aria-label="Pranchas de ${data.title}"></div>` : ''}
           <div class="panel-foot">
-            <span class="pending">Galeria atualizada</span>
+            <span class="pending">${data.galleryNote || 'Galeria atualizada'}</span>
             <a class="btn btn--ghost" href="${data.ctaHref || '#contato'}"><span>${data.cta}</span><i aria-hidden="true">↗</i></a>
           </div>`;
       });
@@ -3165,7 +3174,7 @@
         return initCarousel({
           viewport: $('#plates-viewport-' + (i + 1)),
           rail,
-          items: $$('.plate', rail),
+          items: rail ? $$('.plate', rail) : [],   // disciplina sem galeria (só modelo 3D)
           prevBtn: $('#plates-prev-' + (i + 1)),
           nextBtn: $('#plates-next-' + (i + 1)),
           dotsWrap: $('#plates-dots-' + (i + 1)),
