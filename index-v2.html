@@ -10,6 +10,10 @@
   <link rel="preload" as="image" href="assets/img_4104_1_1x.webp" fetchpriority="high">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230A0A0A'/%3E%3Cpath d='M16 5.5 26.5 16 16 26.5 5.5 16Z' fill='none' stroke='%23C9A227' stroke-width='1.6'/%3E%3Cpath d='M16 11.5 20.5 16 16 20.5 11.5 16Z' fill='%23C9A227'/%3E%3C/svg%3E">
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap">
+
   <style>
     /* ============================================================
        1. TOKENS — identidade extraída da logo: preto, dourado, branco
@@ -39,7 +43,7 @@
       --grad-gold: linear-gradient(135deg, #8c6d1f 0%, #c9a227 26%, #f1e2b0 50%, #c9a227 74%, #8c6d1f 100%);
 
       --display: Georgia, "Times New Roman", serif;
-      --sans: "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+      --sans: "Manrope", "Helvetica Neue", Arial, sans-serif;
       --mono: "Courier New", Courier, monospace;
 
       --page: min(1440px, calc(100vw - 56px));
@@ -72,8 +76,10 @@
       background: var(--bone);
       color: var(--ink);
       font-family: var(--sans);
-      font-size: 16.5px;
-      line-height: 1.62;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.68;
+      letter-spacing: -.004em;
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
     }
@@ -246,13 +252,13 @@
       --btn-fg: var(--bone);
       position: relative;
       display: inline-flex; align-items: center; justify-content: space-between;
-      gap: 18px;
-      padding: 17px 20px;
+      gap: 16px;
+      padding: 17px 18px;
       min-height: 54px;
       background: var(--btn-bg);
       color: var(--btn-fg);
-      font: 12px/1 var(--sans);
-      letter-spacing: .17em; text-transform: uppercase;
+      font: 600 12px/1 var(--sans);
+      letter-spacing: .1em; text-transform: uppercase;
       overflow: hidden;
       isolation: isolate;
       transition: color 320ms var(--ease), transform 320ms var(--ease);
@@ -293,8 +299,8 @@
       position: relative;
       display: inline-flex; align-items: center; gap: 10px;
       padding-bottom: 5px;
-      font: 11.5px/1 var(--mono);
-      letter-spacing: .18em; text-transform: uppercase;
+      font: 600 11.5px/1 var(--sans);
+      letter-spacing: .14em; text-transform: uppercase;
       color: inherit;
     }
     .link::after {
@@ -399,8 +405,9 @@
     .nav a {
       position: relative;
       padding: 8px 0 9px;
-      font: 12px/1 var(--sans);
-      letter-spacing: .16em; text-transform: uppercase;
+      font: 500 12px/1 var(--sans);
+      letter-spacing: .12em; text-transform: uppercase;
+      white-space: nowrap;
       color: var(--ink);
       transition: color 260ms var(--ease);
     }
@@ -474,7 +481,7 @@
     }
     .menu.is-open .menu-foot { opacity: 1; transform: none; }
     .menu-foot .tag { color: var(--muted-inv); }
-    .menu-foot a.contact-line-link { color: var(--bone); font: 13px/1.5 var(--sans); letter-spacing: .08em; }
+    .menu-foot a.contact-line-link { color: var(--bone); font: 500 15px/1.5 var(--sans); letter-spacing: .01em; }
 
     /* ============================================================
        8. HERO
@@ -1149,7 +1156,7 @@
     .card-link {
       display: inline-flex; align-items: center; gap: 10px;
       margin-top: 16px;
-      font: 11px/1 var(--mono); letter-spacing: .18em; text-transform: uppercase;
+      font: 600 11px/1 var(--sans); letter-spacing: .13em; text-transform: uppercase;
       color: var(--ink);
     }
     .card-link .lozenge { width: 7px; height: 7px; }
@@ -1553,7 +1560,7 @@
       display: flex; align-items: center; justify-content: center; gap: 10px;
       padding: 17px 10px;
       background: var(--black); color: var(--bone);
-      font: 11px/1 var(--sans); letter-spacing: .11em; text-transform: uppercase;
+      font: 600 11.5px/1 var(--sans); letter-spacing: .09em; text-transform: uppercase;
       white-space: nowrap;
     }
     .mobile-cta a.is-gold { background: var(--gold); color: var(--black); }
@@ -1687,7 +1694,7 @@
       .hero-actions .btn { width: 100%; min-width: 0; }
       .hero-plate { padding: 20px 20px 36px; }
       .hero-plate .dim-x { left: 20px; right: 20px; }
-      .hero-plate .dim-y, .plate-tag--tr { display: none; }
+      .hero-plate .dim-y, .hero-plate .plate-tag--tr { display: none; }
       .hero-plate .scan { left: 20px; right: 20px; top: 20px; }
       .trust-grid, .quotes, .form-grid { grid-template-columns: 1fr; }
       .mstep, .card { flex-basis: 82vw; }
@@ -2195,7 +2202,7 @@
           <ol class="carousel-rail" id="method-rail">
             <li class="mstep">
               <div class="mstep-art">
-                <img src="assets/img_3780_1_1x.webp" alt="Profissional da Diniz Construtora em atendimento inicial ao cliente." loading="lazy" decoding="async">
+                <img src="assets/metodo/compreensao.webp" alt="Profissional conversando com um casal de clientes durante a apresentação de um imóvel." loading="lazy" decoding="async">
                 <span class="mstep-n">Etapa 01</span>
               </div>
               <div class="mstep-cap">
@@ -2205,7 +2212,7 @@
             </li>
             <li class="mstep">
               <div class="mstep-art">
-                <img src="assets/img_3856_1_1x.webp" alt="Direção da Diniz Construtora planejando no escritório da empresa." loading="lazy" decoding="async">
+                <img src="assets/metodo/planejamento.webp" alt="Mãos de arquiteto sobre pranchas de projeto, com régua, lápis e calculadora." loading="lazy" decoding="async">
                 <span class="mstep-n">Etapa 02</span>
               </div>
               <div class="mstep-cap">
@@ -2611,21 +2618,21 @@
               description: 'Composição residencial de dois pavimentos marcada por grandes aberturas, elementos naturais e uma implantação aberta para o jardim.'
             },
             {
-              title: 'Residência Débora',
+              title: 'Residência D',
               meta: 'Render arquitetônico · Fachada frontal',
               image: 'assets/portfolio/arch-residencia-debora.webp',
-              alt: 'Render frontal da Residência Débora, com garagem dupla, pedra clara e pano de vidro vertical.',
+              alt: 'Render frontal da Residência D, com garagem dupla, pedra clara e pano de vidro vertical.',
               description: 'Fachada frontal com garagem dupla, plano vertical envidraçado e materialidade clara valorizada pelo paisagismo.'
             },
             {
-              title: 'Residência Isadora',
+              title: 'Residência I',
               meta: 'Render arquitetônico · Fachada de esquina',
               image: 'assets/portfolio/arch-residencia-isadora.webp',
-              alt: 'Render da Residência Isadora em terreno de esquina, com volumes rosados, ripado e jardim.',
+              alt: 'Render da Residência I em terreno de esquina, com volumes rosados, ripado e jardim.',
               description: 'Implantação de esquina que organiza o acesso por meio de volumes sobrepostos, ripados verticais e uma faixa contínua de jardim.'
             },
             {
-              title: 'Residência Bruno e Daniele',
+              title: 'Residência B&D',
               meta: 'Render arquitetônico · Fachada noturna',
               image: 'assets/portfolio/arch-residencia-bruno-daniele.webp',
               alt: 'Render noturno de residência de dois pavimentos com pedra, ripado de madeira e iluminação de fachada.',
@@ -2648,14 +2655,14 @@
           cta: 'Solicitar projeto de interiores',
           items: [
             {
-              title: 'Sala Bruno e Daniele',
+              title: 'Sala B&D',
               meta: 'Render de interiores · Área social',
               image: 'assets/portfolio/interior-sala-bruno-daniele.webp',
               alt: 'Render de sala de jantar integrada à cozinha, com madeira, pedra clara e iluminação pendente.',
               description: 'Área social integrada em que cozinha, jantar e estar compartilham a mesma linguagem de madeira, pedra clara e iluminação quente.'
             },
             {
-              title: 'Suíte Débora',
+              title: 'Suíte D',
               meta: 'Render de interiores · Dormitório',
               image: 'assets/portfolio/interior-quarto-debora.webp',
               alt: 'Render de suíte em tons claros, com painéis amadeirados, poltronas e iluminação indireta.',
@@ -2719,7 +2726,7 @@
           stages: 'Fundação · Fôrmas · Armação · Memorial',
           cta: 'Solicitar projeto estrutural',
           model3d: {
-            title: 'Residência Vinicius Diniz',
+            title: 'Residência V',
             meta: 'Modelo 3D interativo · Projeto estrutural',
             preview: 'assets/portfolio/sketchfab-estrutura-preview.webp',
             href: 'https://sketchfab.com/3d-models/residencia-vinicius-diniz-dc359032ac4443589357ee9889b431ce',
@@ -2785,7 +2792,7 @@
           stages: 'Água · Esgoto · Pluvial · Reservação',
           cta: 'Solicitar projeto hidráulico',
           model3d: {
-            title: 'Residência Vinicius Diniz · Hidráulico',
+            title: 'Residência V · Hidráulico',
             meta: 'Modelo BIM interativo · Instalações hidrossanitárias',
             preview: 'assets/portfolio/hidraulico-isometrico-bim.webp',
             previewAlt: 'Isométrico BIM das instalações hidrossanitárias, com aquecedor solar, reservatórios e traçado de tubulações.',
@@ -2818,7 +2825,7 @@
           stages: 'Quadros · Circuitos · Luminotécnico · SPDA',
           cta: 'Solicitar projeto elétrico',
           model3d: {
-            title: 'Residência Vinicius Diniz · Elétrico',
+            title: 'Residência V · Elétrico',
             meta: 'Modelo BIM interativo · Instalações elétricas',
             preview: 'assets/portfolio/eletrico-isometrico-bim.webp',
             previewAlt: 'Isométrico BIM das instalações elétricas, com eletrodutos, quadros e traçado de circuitos.',
