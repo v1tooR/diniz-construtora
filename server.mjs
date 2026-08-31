@@ -1,5 +1,5 @@
 // Servidor estático simples para pré-visualizar a landing page localmente.
-// Uso: node server.mjs  →  http://localhost:4321/index-v2.html
+// Uso: node server.mjs  →  http://localhost:4321/
 import { createServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
 import { extname, join, normalize } from 'node:path';
@@ -12,6 +12,8 @@ const TYPES = {
   '.css': 'text/css; charset=utf-8',
   '.js': 'text/javascript; charset=utf-8',
   '.mjs': 'text/javascript; charset=utf-8',
+  '.xml': 'application/xml; charset=utf-8',
+  '.txt': 'text/plain; charset=utf-8',
   '.webp': 'image/webp',
   '.png': 'image/png',
   '.jpg': 'image/jpeg',
@@ -21,7 +23,7 @@ const TYPES = {
 
 createServer(async (req, res) => {
   const url = decodeURIComponent(req.url.split('?')[0]);
-  const rel = normalize(url === '/' ? '/index-v2.html' : url).replace(/^([/\\])+/, '');
+  const rel = normalize(url === '/' ? '/index.html' : url).replace(/^([/\\])+/, '');
   const file = join(ROOT, rel);
 
   if (!file.startsWith(ROOT)) {
@@ -39,4 +41,4 @@ createServer(async (req, res) => {
   } catch {
     res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' }).end('404');
   }
-}).listen(PORT, () => console.log(`http://localhost:${PORT}/index-v2.html`));
+}).listen(PORT, () => console.log(`http://localhost:${PORT}/`));

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://dinizconstrutorasp.com.br/sitemap.xml
