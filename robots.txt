@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://dinizconstrutorasp.com.br/sitemap.xml
+Sitemap: https://dinizconstrutorainc.com.br/sitemap.xml
